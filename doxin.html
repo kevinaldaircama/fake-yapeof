@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Solicitud de Acceso</title>
+
+<link rel="stylesheet" href="cc/doxin.css">
+</head>
+
+<body>
+
+<div class="container">
+
+  <div class="header">
+    <h2>Solicitud de Acceso</h2>
+    <p>Acceso al sistema – completa todos los datos</p>
+  </div>
+
+  <div class="form-group">
+    <label>ID del cliente <span class="required">*</span></label>
+    <input id="id" placeholder="Ejemplo: 12345">
+  </div>
+
+  <div class="form-group">
+    <label>Usuario de Telegram <span class="required">*</span></label>
+    <input id="usuario" placeholder="Ejemplo: @admin123">
+  </div>
+
+  <div class="form-group">
+    <label>Días solicitados <span class="required">*</span></label>
+    <input id="dias" type="number" placeholder="Ejemplo: 15" min="1">
+  </div>
+
+  <div class="form-group">
+    <label>Método de pago preferido <span class="required">*</span></label>
+    <select id="metodo">
+      <option value="">Seleccionar...</option>
+      <option>Yape</option>
+      <option>Plin</option>
+      <option>Transferencia</option>
+      <option>Otro</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label>Mensaje adicional (opcional)</label>
+    <textarea id="mensaje" rows="3" placeholder="Escribe algún detalle si deseas..."></textarea>
+  </div>
+
+  <button id="btnEnviar">Enviar Solicitud por WhatsApp</button>
+
+  <p id="error" class="error"></p>
+
+  <div class="footer">
+    Todos los campos marcados con * son obligatorios
+  </div>
+
+</div>
+
+<script src="app/doxin.js"></script>
+</body>
+</html>

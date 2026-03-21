@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<title>Yapear</title>
+
+<link rel="manifest" href="manifest.json" />
+<meta name="theme-color" content="#720e9e" />
+<link rel="icon" type="image/png" href="imagen/app_icon_xxxhdpi.png">
+
+<!-- CSS externo -->
+<link rel="stylesheet" href="cc/yapear.css">
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+</head>
+
+<body>
+
+<div class="app">
+
+    <div class="topbar">
+        <div class="close">✕</div>
+        <div class="title">Yapear</div>
+    </div>
+
+    <div class="search-container">
+        <div class="search-box">
+            <input type="text" id="buscador" placeholder="Busca el celular o contacto">
+            <div class="icon">🔍</div>
+        </div>
+    </div>
+
+    <div class="section-title">
+        Todos tus contactos
+    </div>
+
+    <div class="contact-list">
+        <div class="loading">Cargando contactos...</div>
+    </div>
+
+</div>
+
+<!-- JS externo -->
+<script src="app/firebase-config.js"></script>
+<script src="app/yapear.js"></script>
+
+</body>
+</html>

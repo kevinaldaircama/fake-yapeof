@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Login</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#720e9e">
+<link rel="icon" type="image/png" href="imagen/app_icon_xxxhdpi.png">
+
+<!-- CSS externo -->
+<link rel="stylesheet" href="cc/login admin.css">
+</head>
+
+<body>
+
+<div class="box">
+  <h2>Iniciar Sesión</h2>
+
+  <input id="loginUser" placeholder="Usuario">
+  <input id="loginPass" type="password" placeholder="Contraseña">
+
+  <button id="btnLogin">Entrar</button>
+
+  <p id="loginStatus" class="error" style="display:none;"></p>
+</div>
+
+<!-- Firebase config -->
+<script src="app/firebase-config.js"></script>
+
+<!-- Script principal -->
+<script type="module" src="app/login admin.js"></script>
+
+</body>
+</html>

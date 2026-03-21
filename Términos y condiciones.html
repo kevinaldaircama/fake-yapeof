@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Términos y Condiciones</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#720e9e">
+<link rel="icon" type="image/png" href="imagen/app_icon_xxxhdpi.png">
+    
+<!-- ICONOS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #0f0f0f, #1c1c1c);
+    color: #fff;
+}
+
+.container {
+    max-width: 900px;
+    margin: auto;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    color: #00ffd5;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    text-align: center;
+    color: #aaa;
+    margin-bottom: 20px;
+}
+
+.terms-box {
+    height: 300px;
+    overflow-y: auto;
+    background: #111;
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid #333;
+}
+
+.term {
+    background: #1a1a1a;
+    margin-bottom: 15px;
+    padding: 15px;
+    border-radius: 10px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    border-left: 4px solid #00ffd5;
+    transition: 0.3s;
+}
+
+.term:hover {
+    transform: scale(1.02);
+    background: #222;
+}
+
+.term i {
+    color: #00ffd5;
+    font-size: 20px;
+    margin-top: 3px;
+}
+
+.actions {
+    margin-top: 20px;
+    text-align: center;
+}
+
+button {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 8px;
+    background: #00ffd5;
+    color: #000;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:disabled {
+    background: #555;
+    cursor: not-allowed;
+}
+
+button:hover {
+    background: #00c9aa;
+}
+
+.checkbox {
+    margin-top: 15px;
+    text-align: center;
+}
+
+.warning {
+    text-align: center;
+    margin-top: 15px;
+    color: #ff4d4d;
+    font-weight: bold;
+}
+
+.footer {
+    margin-top: 20px;
+    text-align: center;
+    color: #777;
+    font-size: 14px;
+}
+</style>
+
+</head>
+<body>
+
+<div class="container">
+
+<h1><i class="fa-solid fa-file-contract"></i> TÉRMINOS Y CONDICIONES</h1>
+<p class="subtitle">Por favor lee cuidadosamente antes de continuar</p>
+
+<div class="terms-box" id="termsBox">
+
+    <div class="term">
+        <i class="fa-solid fa-ban"></i>
+        <p>No se aceptan cambios ni devoluciones. Problemas con su dispositivo u otros factores externos no están cubiertos.</p>
+    </div>
+
+    <div class="term">
+        <i class="fa-solid fa-headset"></i>
+        <p>El soporte puede tardar hasta 12 horas debido a la alta demanda (más de 100,000 usuarios).</p>
+    </div>
+
+    <div class="term">
+        <i class="fa-solid fa-circle-question"></i>
+        <p>Debes preguntar todo antes de comprar. No trabajamos con publicidad engañosa.</p>
+    </div>
+
+    <div class="term">
+        <i class="fa-solid fa-shield-halved"></i>
+        <p>Se ofrece garantía de uso, excepto en casos de reventa o mal uso del servicio.</p>
+    </div>
+
+    <div class="term">
+        <i class="fa-solid fa-users"></i>
+        <p>Somos una empresa con alta demanda, por lo que pedimos paciencia en la atención.</p>
+    </div>
+
+    <!-- NUEVOS TERMINOS -->
+    <div class="term">
+        <i class="fa-solid fa-lock"></i>
+        <p>Tu información es privada y no será compartida con terceros.</p>
+    </div>
+
+    <div class="term">
+        <i class="fa-solid fa-user-shield"></i>
+        <p>El uso indebido del servicio puede resultar en suspensión sin reembolso.</p>
+    </div>
+
+    <div class="term">
+        <i class="fa-solid fa-clock"></i>
+        <p>Los servicios pueden tener tiempos de activación variables.</p>
+    </div>
+
+    <div class="term">
+        <i class="fa-solid fa-repeat"></i>
+        <p>No se permite la reventa sin autorización previa.</p>
+    </div>
+
+    <div class="term">
+        <i class="fa-solid fa-check-circle"></i>
+        <p>Al continuar, aceptas todos estos términos y condiciones.</p>
+    </div>
+
+</div>
+
+<div class="checkbox">
+    <input type="checkbox" id="acceptCheck"> 
+    <label for="acceptCheck">He leído y acepto los términos</label>
+</div>
+
+<div class="actions">
+    <button id="acceptBtn" disabled>ACEPTAR Y CONTINUAR</button>
+</div>
+
+<div class="warning">
+    ⛔ ES OBLIGATORIO LEER TODO
+</div>
+
+<div class="footer">
+    © 2026 - Todos los derechos reservados
+</div>
+
+</div>
+
+<script>
+const termsBox = document.getElementById("termsBox");
+const acceptBtn = document.getElementById("acceptBtn");
+const check = document.getElementById("acceptCheck");
+
+// Activar botón solo si hace scroll hasta abajo
+termsBox.addEventListener("scroll", () => {
+    if (termsBox.scrollTop + termsBox.clientHeight >= termsBox.scrollHeight) {
+        check.disabled = false;
+    }
+});
+
+// Activar botón si marca checkbox
+check.addEventListener("change", () => {
+    acceptBtn.disabled = !check.checked;
+});
+
+// Guardar aceptación
+acceptBtn.addEventListener("click", () => {
+    localStorage.setItem("termsAccepted", "true");
+    alert("Términos aceptados ✅");
+
+    // Redirección (cámbiala si quieres)
+    window.location.href = "https://wa.link/yhoyyf";
+});
+</script>
+
+</body>
+</html>

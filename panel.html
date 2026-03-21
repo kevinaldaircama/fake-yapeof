@@ -1,0 +1,858 @@
+<!DOCTYPE html>  
+<html lang="es">  
+<head>  
+<meta charset="UTF-8">  
+<title>Dashboard Usuarios</title>  
+<meta name="viewport" content="width=device-width, initial-scale=1.0">  
+  <link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#720e9e">
+<link rel="icon" type="image/png" href="imagen/app_icon_xxxhdpi.png">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">  
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>  
+  
+<style>
+:root {
+  --bg: #121827;       /* fondo principal oscuro */
+  --card: #1f2937;     /* cajas y modales ligeramente más claros */
+  --text: #e5e7eb;     /* texto claro */
+  --primary: #4e9af1;  /* color principal botones y acentos */
+  --secondary: #f97316;/* hover de botones */
+  --shadow: rgba(0, 0, 0, 0.6);
+}
+
+/* RESET Y BODY */
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; }
+body { background: var(--bg); color: var(--text); }
+
+/* SIDEBAR */
+.sidebar {
+  width: 250px;
+  height: 100vh;
+  background: #111827;
+  position: fixed;
+  top: 0;
+  left: -250px;
+  padding: 20px;
+  transition: left 0.3s;
+  border-right: 1px solid #222;
+  display: flex;
+  flex-direction: column;
+}
+.sidebar.active { left: 0; }
+.sidebar h2 {
+  color: var(--primary);
+  text-align: center;
+  margin-bottom: 25px;
+  font-weight: 600;
+}
+.sidebar a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 15px;
+  color: #cbd5f5;
+  text-decoration: none;
+  border-radius: 6px;
+  margin: 5px 0;
+  transition: 0.2s;
+}
+.sidebar a.active, .sidebar a:hover {
+  background: var(--primary);
+  color: #fff;
+}
+
+/* HAMBURGUESA */
+.hamburger { width: 32px; cursor: pointer; margin: 15px; }
+.hamburger span {
+  display: block; height: 3px; background: var(--text);
+  margin: 6px 0; border-radius: 2px; transition: 0.3s;
+}
+.hamburger.active span:nth-child(1){ transform: rotate(45deg) translate(5px,5px); }
+.hamburger.active span:nth-child(2){ opacity:0; }
+.hamburger.active span:nth-child(3){ transform: rotate(-45deg) translate(6px,-6px); }
+
+/* CONTENT */
+.content { margin-left: 20px; padding: 25px; transition: margin-left 0.3s; }
+.content.active { margin-left: 250px; }
+
+/* BOXES */
+.box {
+  background: var(--card);
+  padding: 25px;
+  border-radius: 12px;
+  margin-bottom: 25px;
+  box-shadow: 0 4px 12px var(--shadow);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.box:hover { transform: translateY(-3px); box-shadow: 0 8px 20px var(--shadow); }
+
+/* INPUTS & BUTTONS */
+input, select, button {
+  padding: 12px;
+  margin: 8px 0;
+  border-radius: 6px;
+  border: 1px solid #374151;
+  outline: none;
+  width: 100%;
+  background: #1f2937;
+  color: var(--text);
+  transition: all 0.2s;
+}
+input:focus, select:focus { border-color: var(--primary); box-shadow: 0 0 6px var(--primary); }
+
+button {
+  cursor: pointer;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  font-weight: 600;
+  transition: 0.2s;
+}
+button:hover { background: var(--secondary); transform: translateY(-2px); }
+
+/* TABLE */
+table {
+  width: 100%; border-collapse: collapse; margin-top: 15px; display: block; overflow-x: auto; border-radius: 8px;
+}
+th, td {
+  padding: 10px;
+  border: 1px solid #374151;
+  text-align: center;
+}
+th { background: #111827; color: var(--card); font-weight: 600; }
+tr:hover td { background: #1f2937; }
+
+/* MODALES */
+.modal-overlay, #loginOverlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.7);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 999;
+}
+.modal-box {
+  background: var(--card);
+  padding: 25px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 450px;
+  box-shadow: 0 8px 20px var(--shadow);
+}
+
+/* RESPONSIVE */
+@media (max-width:768px){
+  .sidebar { width: 200px; left: -200px; }
+  .content.active { margin-left: 0; }
+  .hamburger { margin: 10px; }
+}
+</style>
+</head>  
+<body>  
+    
+    <div class="modal-overlay" id="firebaseModal" style="display:none;">
+  <div class="modal-box">
+
+    <h3>Config Firebase</h3>
+
+    <textarea id="firebaseText"
+    style="width:100%;height:200px;"></textarea>
+
+    <button onclick="saveFirebase()">Guardar</button>
+    <button onclick="closeFirebaseModal()">Cerrar</button>
+
+  </div>
+</div>
+
+<div class="modal-overlay" id="modalCreated" style="display:none;">  
+<div class="modal-box">  
+  
+<h3>Cuenta creada</h3>  
+  
+<p id="createdData"></p>  
+  
+<button id="sendWA">Enviar por WhatsApp</button>  
+  
+<button onclick="closeCreated()">Cerrar</button>  
+  
+</div>  
+</div>  
+<!-- SIDEBAR -->  
+<div class="sidebar" id="sidebar">  
+<h2>DASHBOARD</h2>  
+<a class="active" data-section="dashboard"><i class="fa fa-chart-bar"></i> Dashboard</a>  
+<a data-section="users"><i class="fa fa-users"></i> Usuarios</a>  
+<a data-section="settings"><i class="fa fa-gear"></i> Configuración</a>  
+</div>  
+  
+<div class="hamburger" id="menuBtn"><span></span><span></span><span></span></div>  
+  
+<div class="content" id="content">  
+  
+<!-- DASHBOARD -->  
+<div id="dashboard" class="box" style="display:none;">  
+<h2>Dashboard</h2>  
+<p id="welcome"></p>  
+<canvas id="roleChart"></canvas>  
+</div>  
+  
+<!-- USUARIOS -->  
+<div id="users" class="box" style="display:none;">  
+<h2>Usuarios</h2>  
+<h3>Crear Usuario</h3>  
+<input id="newUser" placeholder="Usuario">  
+<input id="newEmail" placeholder="Correo">  
+<input id="newPass" placeholder="Contraseña">  
+<input id="newName" placeholder="Nombre">  
+<input id="newPhone" placeholder="WhatsApp">  
+<input id="newExpire" type="date">  
+<select id="newRole">  
+<option value="admin">Admin</option>  
+<option value="soporte">Soporte</option>  
+<option value="vendedor">Vendedor</option>  
+<option value="cliente">Cliente</option>  
+</select>  
+<button onclick="createUser()">Crear Usuario</button>  
+  
+<h3>Filtros</h3>  
+<select id="filterStatus" onchange="loadUsers()">  
+<option value="all">Todos</option>  
+<option value="vigente">Vigentes</option>  
+<option value="expirado">Expirados</option>  
+</select>  
+<button onclick="renewAll()">Renovar Todo +30 días</button>  
+  
+<h3>Listado de Usuarios</h3>  
+<table>  
+<thead>  
+<tr>  
+<th>Usuario</th>  
+<th>Correo</th>  
+<th>Contraseña</th>  
+<th>Nombre</th>  
+<th>WhatsApp</th>  
+<th>Vence</th>  
+<th>Días</th>  
+<th>Acciones</th>  
+</tr>  
+</thead>  
+<tbody id="usersList"></tbody>  
+</table>  
+</div>  
+  
+<!-- CONFIGURACIÓN -->  
+<div id="settings" class="box" style="display:none;">  
+<h2>Configuración</h2>  
+<button onclick="logout()">Cerrar sesión</button>  
+  
+<button onclick="toggleMaintenance()">🛠️ Modo Mantenimiento</button>  
+<p id="maintStatus">Estado mantenimiento: DESACTIVADO</p>  
+<button onclick="openFirebaseModal()">🔥 Config Firebase</button>
+<p id="firebaseStatus">Firebase: NO CONFIGURADO</p>
+<!-- BOTÓN MODO PWA -->
+  <button onclick="togglePWA()">📱 Modo PWA</button>  
+  <p id="pwaStatus">Estado PWA: DESACTIVADO</p>
+  
+ 
+</div>  
+  
+<!-- MODAL EDITAR -->
+<div class="modal-overlay" id="modalEdit" style="display:none;">
+  <div class="modal-box">
+    <h3>Editar Usuario</h3>
+    <input id="editUser" disabled>
+    <input id="editEmail" placeholder="Correo"> <!-- Cambiado de newEmail a editEmail -->
+    <input id="editPass" placeholder="Contraseña">
+    <input id="editName" placeholder="Nombre">
+    <input id="editPhone" placeholder="WhatsApp">
+    <input id="editExpire" type="date">
+    <select id="editRole">
+      <option value="admin">Admin</option>
+      <option value="soporte">Soporte</option>
+      <option value="vendedor">Vendedor</option>
+      <option value="cliente">Cliente</option>
+    </select>
+    <button onclick="saveEdit()">Guardar</button>
+    <button onclick="closeModal()">Cancelar</button>
+  </div>
+</div>
+  
+<!-- LOGIN MODAL -->  
+<div id="loginOverlay">  
+  <div id="loginBox" class="box">  
+    <h2>Iniciar Sesión</h2>  
+    <input id="email" placeholder="Correo">  
+    <input id="password" type="password" placeholder="Contraseña">  
+    <button id="btnLogin">Entrar</button>
+    <p id="error" style="color:#ef4444;display:none;">Credenciales incorrectas</p>  
+  </div>  
+</div>  
+  
+<script type="module">  
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";  
+import { getDatabase, ref, set, get, remove, update } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";  
+  
+const firebaseConfig = {  
+apiKey: "AIzaSyAgynl913FF8I1x23n1HZ5pYm6pS1p1i5M",
+    authDomain: "yape-b7dd2.firebaseapp.com",
+    databaseURL: "https://yape-b7dd2-default-rtdb.firebaseio.com",
+    projectId: "yape-b7dd2",
+    storageBucket: "yape-b7dd2.firebasestorage.app",
+    messagingSenderId: "921630422374",
+    appId: "1:921630422374:web:b622038a7b4128cc6284a7",
+    measurementId: "G-0K02J87M67"  
+};  
+  
+const app = initializeApp(firebaseConfig);  
+const db = getDatabase(app);  
+  
+let dashboard, users, settings, welcome, usersList, filterStatus;  
+  
+let editModal, editUser, editEmail, editPass, editName, editPhone, editExpire, editRole;
+  
+let newUser, newEmail, newPass, newName, newPhone;  
+  
+const WEB_NAME = window.location.hostname;  
+  
+// ---------------- INIT ----------------  
+  
+document.addEventListener("DOMContentLoaded",()=>{ 
+document.getElementById("btnLogin").onclick = login; 
+loadFirebaseConfig();
+loadPWAStatus();
+dashboard = document.getElementById("dashboard");  
+users = document.getElementById("users");  
+settings = document.getElementById("settings");  
+welcome = document.getElementById("welcome");  
+usersList = document.getElementById("usersList");  
+filterStatus = document.getElementById("filterStatus");  
+  
+newUser = document.getElementById("newUser");  
+newEmail = document.getElementById("newEmail");  
+newPass = document.getElementById("newPass");  
+newName = document.getElementById("newName");  
+newPhone = document.getElementById("newPhone");  
+  
+editModal = document.getElementById("modalEdit");  
+editUser = document.getElementById("editUser");
+editEmail = document.getElementById("editEmail");
+editPass = document.getElementById("editPass"); 
+editName = document.getElementById("editName");  
+editPhone = document.getElementById("editPhone");  
+editExpire = document.getElementById("editExpire");  
+editRole = document.getElementById("editRole");  
+  
+if(!localStorage.getItem("adminUser")){  
+document.getElementById("loginOverlay").style.display="flex";  
+}else{  
+mostrarPanel();  
+}  
+  
+sidebar.classList.remove("active");  
+content.classList.remove("active");  
+menuBtn.classList.remove("active");  
+  
+updateMaintText();  
+  
+});  
+  
+  
+// ---------------- MENU ----------------  
+  
+const sidebar=document.getElementById("sidebar");  
+const menuBtn=document.getElementById("menuBtn");  
+const content=document.getElementById("content");  
+  
+menuBtn.onclick=()=>{  
+sidebar.classList.toggle("active");  
+content.classList.toggle("active");  
+menuBtn.classList.toggle("active");  
+};  
+  
+document.querySelectorAll(".sidebar a").forEach(link=>{  
+link.onclick=()=>{  
+document.querySelectorAll(".sidebar a").forEach(a=>a.classList.remove("active"));  
+link.classList.add("active");  
+  
+dashboard.style.display="none";  
+users.style.display="none";  
+settings.style.display="none";  
+  
+document.getElementById(link.dataset.section).style.display="block";  
+  
+menuBtn.click();  
+};  
+});  
+  
+  
+// ---------------- LOGIN ----------------  
+  
+window.login=async()=>{  
+  
+const email = document.getElementById("email").value.trim();  
+const pass = document.getElementById("password").value.trim();  
+  
+if(email==="kevinaldaircamachoserna51@gmail.com" && pass==="1234"){  
+  
+localStorage.setItem("adminUser",email);  
+localStorage.setItem("adminRole","superadmin");  
+localStorage.setItem("adminName","Kevin");  
+  
+mostrarPanel();  
+return;  
+}  
+  
+const snap = await get(ref(db,"admins/"+email.replace(".","_")));  
+  
+if(!snap.exists()){  
+document.getElementById("error").style.display="block";  
+return;  
+}  
+  
+const data = snap.val();  
+  
+if(data.pass!==pass){  
+document.getElementById("error").style.display="block";  
+return;  
+}  
+  
+localStorage.setItem("adminUser",data.user);  
+localStorage.setItem("adminRole",data.role);  
+localStorage.setItem("adminName",data.name);  
+  
+mostrarPanel();  
+  
+};  
+  
+  
+// ---------------- PANEL ----------------  
+  
+function mostrarPanel() {
+  document.getElementById("loginOverlay").style.display = "none";
+
+  dashboard.style.display = "block";
+  users.style.display = "none";
+  settings.style.display = "none";
+
+  // Activar la sección dashboard en el menú
+  document.querySelectorAll(".sidebar a").forEach(a => a.classList.remove("active"));
+  document.querySelector(".sidebar a[data-section='dashboard']").classList.add("active");
+
+  welcome.innerText = "Bienvenido " + localStorage.getItem("adminName");
+
+  loadUsers();
+  loadChart();
+}
+  
+  
+// ---------------- LOGOUT ----------------  
+  
+window.logout=()=>{  
+localStorage.clear();  
+location.reload();  
+};  
+  
+  
+// ---------------- CREATE USER ----------------  
+  
+window.createUser=async()=>{  
+  
+const user=newUser.value.trim();  
+const email=newEmail.value.trim();  
+const pass=newPass.value.trim();  
+const name=newName.value.trim();  
+const phone=newPhone.value.replace(/\D/g,"");
+const expire=document.getElementById("newExpire").value;  
+const role=document.getElementById("newRole").value;  
+  
+if(!user||!pass||!name||!phone||!expire||!email){  
+alert("Completa todos");  
+return;  
+}  
+  
+const exist = await get(ref(db,"admins/"+user.replace(".","_")));  
+  
+if(exist.exists()){  
+alert("Usuario ya existe");  
+return;  
+}  
+  
+await set(ref(db,"admins/"+user.replace(".","_")),{  
+user,email,pass,name,phone,expire,role  
+});  
+  
+newUser.value="";  
+newEmail.value="";  
+newPass.value="";  
+newName.value="";  
+newPhone.value="";  
+document.getElementById("newExpire").value="";  
+  
+loadUsers();  
+loadChart();  
+  
+showCreated(user,email,pass,name,phone,expire);  
+  
+};  
+function showCreated(user,email,pass,name,phone,expire){  
+  
+const modal = document.getElementById("modalCreated");  
+const data = document.getElementById("createdData");  
+const btn = document.getElementById("sendWA");  
+  
+const web = window.location.hostname;  
+  
+const msg =  
+`Felicidades ${user} su cuenta se ha creado con éxito,  
+a continuación le doy sus datos de acceso.  
+  
+Web: ${web}  
+Usuario: ${user}  
+Correo: ${email}  
+Contraseña: ${pass}  
+Vence: ${expire}`;  
+  
+data.innerText = msg;  
+  
+const wa =  
+"https://wa.me/"+phone+  
+"?text="+encodeURIComponent(msg);  
+  
+btn.onclick=()=>{  
+window.open(wa);  
+};  
+  
+modal.style.display="flex";  
+  
+}  
+  window.closeCreated = () => {
+  document.getElementById("modalCreated").style.display = "none";
+};
+// ---------------- LOAD USERS ----------------  
+  
+async function loadUsers() {
+  const snap = await get(ref(db, "admins"));
+  usersList.innerHTML = "";
+  if (!snap.exists()) return;
+
+  const filter = filterStatus.value;
+
+  Object.entries(snap.val()).forEach(([id, u]) => {
+    let dias = 0;
+
+if (u.expire) {
+  const d = new Date(u.expire);
+  if (!isNaN(d)) {
+    dias = Math.floor((d.getTime() - Date.now()) / 86400000);
+  }
+}
+
+    if (filter === "vigente" && dias < 0) return;
+    if (filter === "expirado" && dias >= 0) return;
+
+    const waMsg = `Hola ${u.name}, tu servicio en ${WEB_NAME} vence en ${dias} días`;
+    const waUrl = `https://wa.me/${u.phone}?text=${encodeURIComponent(waMsg)}`;
+
+    usersList.innerHTML += `
+      <tr>
+        <td>${u.user}</td>
+        <td>${u.email || ""}</td>
+        <td>*****</td>
+        <td>${u.name}</td>
+        <td><button onclick="window.open('${waUrl}')">${u.phone}</button></td>
+        <td>${u.expire || ""}</td>
+        <td>${dias}</td>
+        <td>
+          <button onclick="openEdit('${id}')">Editar</button>
+          <button onclick="deleteUser('${id}')">Eliminar</button>
+        </td>
+      </tr>
+    `;
+  });
+
+  loadChart();
+}
+  
+  
+// ---------------- DELETE ----------------  
+  
+window.deleteUser=async(id)=>{  
+  
+if(!confirm("Eliminar?")) return;  
+  
+await remove(ref(db,"admins/"+id));  
+  
+loadUsers();  
+  
+};  
+  
+  
+// ---------------- EDIT ----------------  
+  
+window.openEdit=(id)=>{  
+  
+editModal.style.display="flex";  
+editModal.dataset.id=id;  
+  
+get(ref(db,"admins/"+id)).then(snap=>{  
+  
+const u=snap.val();  
+  
+editUser.value=u.user;  
+editPass.value=u.pass;  
+editName.value=u.name;  
+editPhone.value=u.phone;  
+editExpire.value=u.expire;  
+editRole.value=u.role;  
+  
+});  
+  
+};  
+  
+window.closeModal=()=>{  
+editModal.style.display="none";  
+};  
+  
+window.saveEdit = async () => {
+  const id = editModal.dataset.id;
+
+  await update(ref(db, "admins/" + id), {
+    email: editEmail.value,   // <--- actualizar correo
+    pass: editPass.value,
+    name: editName.value,
+    phone: editPhone.value,
+    expire: editExpire.value,
+    role: editRole.value
+  });
+
+  closeModal();
+  loadUsers();
+};
+
+  
+  
+// ---------------- CHART ----------------  
+  
+let roleChart;  
+  
+async function loadChart(){  
+  
+const snap = await get(ref(db,"admins"));  
+if(!snap.exists()) return;  
+  
+const data=Object.values(snap.val());  
+  
+const roles={},vigente={},expirado={};  
+  
+data.forEach(u=>{  
+  
+if(!roles[u.role]){  
+roles[u.role]=0;  
+vigente[u.role]=0;  
+expirado[u.role]=0;  
+}  
+  
+roles[u.role]++;  
+  
+const dias = u.expire  
+? Math.floor((new Date(u.expire).getTime()-Date.now())/(1000*60*60*24))  
+: 0;  
+  
+if(dias<0) expirado[u.role]++;  
+else vigente[u.role]++;  
+  
+});  
+  
+const labels=Object.keys(roles);  
+  
+const ctx=document.getElementById("roleChart");  
+  
+if(roleChart) roleChart.destroy();  
+  
+roleChart=new Chart(ctx,{  
+type:"bar",  
+data:{  
+labels,  
+datasets:[  
+{label:"Vigentes",data:labels.map(r=>vigente[r]),backgroundColor:"#4e9af1"},  
+{label:"Expirados",data:labels.map(r=>expirado[r]),backgroundColor:"#ef4444"}  
+]  
+}  
+});  
+  
+}  
+  // ---------------- RENOVAR TODO A 30 DÍAS ----------------
+window.renewAll = async () => {
+  const snap = await get(ref(db, "admins"));
+  if (!snap.exists()) return;
+
+  const updates = {};
+  const today = new Date();
+  today.setHours(0,0,0,0); // limpiar hora para evitar problemas
+
+  // Fecha de vencimiento = hoy + 30 días
+  const newExpire = new Date(today);
+  newExpire.setDate(newExpire.getDate() + 30);
+  const formattedExpire = newExpire.toISOString().split("T")[0];
+
+  Object.entries(snap.val()).forEach(([id, u]) => {
+    updates[id + "/expire"] = formattedExpire;
+  });
+
+  await update(ref(db, "admins"), updates);
+
+  loadUsers();  // recarga tabla
+  loadChart();  // recarga gráfico
+};
+  
+// ---------------- MAINT ----------------  
+  
+window.toggleMaintenance = async () => {  
+  
+const r = ref(db,"config/maintenance/enabled");  
+  
+const snap = await get(r);  
+  
+await set(r, !(snap.exists() && snap.val()));  
+  
+updateMaintText();  
+  
+};  
+  
+function updateMaintText(){  
+  
+get(ref(db,"config/maintenance/enabled")).then(s=>{  
+  
+const el=document.getElementById("maintStatus");  
+  
+if(!el) return;  
+  
+el.innerText="Estado mantenimiento: "+(s.exists()&&s.val()?"ACTIVADO":"DESACTIVADO");  
+  
+});  
+  
+}  
+// ---------------- PWA FIREBASE ----------------
+
+window.togglePWA = async () => {
+
+  const el = document.getElementById("pwaStatus");
+
+  const snap = await get(ref(db, "config/pwa"));
+
+  let status = false;
+
+  if (snap.exists()) {
+    status = snap.val();
+  }
+
+  status = !status;
+
+  await set(ref(db, "config/pwa"), status);
+
+  if (status) {
+
+    navigator.serviceWorker.register("/service-worker.js")
+      .then(() => el.innerText = "Estado PWA: ACTIVADO")
+      .catch(() => el.innerText = "Estado PWA: ERROR");
+
+  } else {
+
+    const reg = await navigator.serviceWorker.getRegistration();
+
+    if (reg) await reg.unregister();
+
+    el.innerText = "Estado PWA: DESACTIVADO";
+
+  }
+
+};
+
+async function loadPWAStatus() {
+
+  const el = document.getElementById("pwaStatus");
+
+  const snap = await get(ref(db, "config/pwa"));
+
+  if (!snap.exists()) {
+    el.innerText = "Estado PWA: DESACTIVADO";
+    return;
+  }
+
+  const status = snap.val();
+
+  if (status) {
+
+    navigator.serviceWorker.register("/service-worker.js")
+      .then(() => el.innerText = "Estado PWA: ACTIVADO")
+      .catch(() => el.innerText = "Estado PWA: ERROR");
+
+  } else {
+
+    const reg = await navigator.serviceWorker.getRegistration();
+
+    if (reg) await reg.unregister();
+
+    el.innerText = "Estado PWA: DESACTIVADO";
+
+  }
+
+}
+
+// -------- FIREBASE CONFIG MODAL --------
+
+window.openFirebaseModal = () => {
+  document.getElementById("firebaseModal").style.display = "flex";
+};
+
+window.closeFirebaseModal = () => {
+  document.getElementById("firebaseModal").style.display = "none";
+};
+
+window.saveFirebase = async () => {
+
+  const text =
+    document.getElementById("firebaseText").value.trim();
+
+  if (!text) {
+    alert("Vacío");
+    return;
+  }
+
+  let obj;
+
+  try {
+    obj = JSON.parse(text);
+  } catch (e) {
+    alert("Error en JSON");
+    return;
+  }
+
+  await set(ref(db, "config/firebase"), obj);
+
+  document.getElementById("firebaseStatus").innerText =
+    "Firebase: CONFIGURADO";
+
+  closeFirebaseModal();
+};
+
+// -------- CARGAR CONFIG FIREBASE --------
+
+async function loadFirebaseConfig() {
+
+  const snap = await get(ref(db, "config/firebase"));
+
+  if (!snap.exists()) return;
+
+  const data = snap.val();
+
+  document.getElementById("firebaseStatus").innerText =
+    "Firebase: CONFIGURADO";
+
+  document.getElementById("firebaseText").value =
+    JSON.stringify(data, null, 2);
+
+}
+</script>  
+  
+</body>  
+</html> 
