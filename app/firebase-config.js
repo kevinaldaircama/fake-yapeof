@@ -1,5 +1,4 @@
 window.firebaseConfig = {
-  window.firebaseConfig = {
   apiKey: "AIzaSyDVvEXCUiCPB5RmAVVWfmce2x-FALLDL0c",
   authDomain: "roddoxes.firebaseapp.com",
   databaseURL: "https://roddoxes-default-rtdb.firebaseio.com",
