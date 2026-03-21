@@ -8,5 +8,3 @@ window.firebaseConfig = {
   messagingSenderId: "688697487472",
   appId: "1:688697487472:web:7e3d19b907ae330dda04b5"
 };
-
-};
