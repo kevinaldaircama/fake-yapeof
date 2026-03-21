@@ -1,0 +1,129 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+html, body {
+    height: 100%;
+    background-color: #f2f2f2;
+}
+
+.app {
+    width: 100%;
+    max-width: 480px;
+    margin: auto;
+    background-color: white;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Barra superior */
+.topbar {
+    display: flex;
+    align-items: center;
+    padding: 14px;
+    background-color: white;
+    border-bottom: 1px solid #e0e0e0;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.topbar .close {
+    font-size: 20px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.topbar .title {
+    font-size: 17px;
+    font-weight: bold;
+}
+
+/* Buscador */
+.search-container {
+    padding: 10px;
+}
+
+.search-box {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 10px;
+    background-color: #fafafa;
+}
+
+.search-box input {
+    border: none;
+    width: 100%;
+    outline: none;
+    font-size: 15px;
+    background: transparent;
+}
+
+.search-box .icon {
+    font-size: 18px;
+    color: #666;
+}
+
+/* Título sección */
+.section-title {
+    padding: 10px;
+    font-size: 14px;
+    color: black;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    background-color: #fafafa;
+}
+
+/* Lista de contactos */
+.contact-list {
+    flex: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.contact {
+    padding: 14px 12px;
+    border-bottom: 1px solid #e8e8e8;
+    cursor: pointer;
+    transition: background 0.1s;
+}
+
+.contact:active {
+    background-color: #f5f5f5;
+}
+
+.contact-name {
+    font-size: 15px;
+    color: #222;
+}
+
+.contact-number {
+    font-size: 13px;
+    color: #666;
+    margin-top: 3px;
+}
+
+/* Estados */
+.empty, .loading {
+    padding: 20px;
+    text-align: center;
+    color: #777;
+    font-size: 14px;
+}
+
+/* Responsive */
+@media (min-width: 600px) {
+    .app {
+        border: 1px solid #ddd;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+}
