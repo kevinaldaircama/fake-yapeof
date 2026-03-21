@@ -17,6 +17,28 @@ function actualizarPuntos(){
   });
 }
 
+/* MODAL FLEXIBLE */
+function mostrarModal(mensaje, opciones = []) {
+  const modal = document.getElementById("modalAlert");
+  const msg = document.getElementById("modalMensaje");
+  const botones = document.getElementById("modalBotones");
+
+  msg.innerText = mensaje;
+  botones.innerHTML = "";
+
+  opciones.forEach(op => {
+    const btn = document.createElement("button");
+    btn.innerText = op.text;
+    btn.onclick = () => {
+      if(op.callback) op.callback();
+      modal.style.display = "none";
+    };
+    botones.appendChild(btn);
+  });
+
+  modal.style.display = "flex";
+}
+
 /* AGREGAR */
 function agregar(num){
   if(clave.length >= 6) return;
@@ -41,7 +63,7 @@ function agregar(num){
       if(paso === 2){
 
         if(clave !== primeraClave){
-          alert("Las claves no coinciden ❌");
+          mostrarModal("Las claves no coinciden ❌");
           clave = "";
           primeraClave = "";
           paso = 1;
@@ -54,19 +76,17 @@ function agregar(num){
         const data = JSON.parse(localStorage.getItem("registro_temp"));
 
         if(!data){
-          alert("Error: datos perdidos");
+          mostrarModal("Error: datos perdidos");
           return;
         }
 
         try{
-
           const res = await auth.createUserWithEmailAndPassword(
             data.correo,
             data.clave
           );
 
           const user = res.user;
-
           await user.sendEmailVerification();
 
           await db.collection("usuarios")
@@ -76,19 +96,23 @@ function agregar(num){
             correo: data.correo,
             telefono: data.telefono,
             monto: data.monto,
-            pin: btoa(clave),
+            pin: clave,
             verificado: false,
             fecha: new Date()
           });
 
           localStorage.removeItem("registro_temp");
 
-          alert("Te enviamos un correo para verificar tu cuenta 📩");
+          // Modal informativo largo sin botón
+          mostrarModal(
+            "Estimado usuario, su cuenta está a punto de crearse. Para finalizar, debe verificar su correo electrónico. Revise la bandeja de entrada o spam y haga clic en el enlace de verificación.",
+            []
+          );
 
           verificarCorreo();
 
         }catch(e){
-          alert("Error: " + e.message);
+          mostrarModal("Error: " + e.message);
         }
 
       }
@@ -97,32 +121,29 @@ function agregar(num){
   }
 }
 
-/* VERIFICAR */
+/* VERIFICAR CORREO */
 function verificarCorreo(){
-
   verificarIntervalo = setInterval(async ()=>{
 
     const user = auth.currentUser;
-
     if(user){
-
       await user.reload();
 
       if(user.emailVerified){
-
         await db.collection("usuarios")
         .doc(user.uid)
-        .update({
-          verificado: true
-        });
+        .update({ verificado: true });
 
         clearInterval(verificarIntervalo);
 
-        alert("Cuenta verificada correctamente ✅");
-
-        window.location.href = "login";
+        // Modal con botón "Iniciar sesión"
+        mostrarModal(
+          "¡Cuenta verificada correctamente! ✅",
+          [
+            { text: "Iniciar sesión", callback: () => { window.location.href = "login"; } }
+          ]
+        );
       }
-
     }
 
   },5000);
