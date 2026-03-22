@@ -1,7 +1,9 @@
+// Verificar sesión
 if (!localStorage.getItem("sessionToken")) {
   location.href = "/";
 }
-// Obtener parámetros
+
+// Obtener parámetros de URL
 const params = new URLSearchParams(window.location.search);
 const nombre = decodeURIComponent(params.get("nombre") || "Sin nombre");
 const telefono = decodeURIComponent(params.get("telefono") || "000000000");
@@ -22,7 +24,7 @@ document.querySelector("#fecha span").textContent =
 document.querySelector("#hora span").textContent =
   fechaObj.toLocaleTimeString('es-PE', { hour:'2-digit', minute:'2-digit', hour12:true });
 
-// Código seguridad
+// Código de seguridad
 const codigo = Math.floor(Math.random() * 900 + 100).toString();
 const cajas = document.getElementById("codigo-seguridad").children;
 for (let i = 0; i < 3; i++) {
@@ -41,11 +43,11 @@ function lanzarConfeti() {
 
 lanzarConfeti();
 
-// Operación
+// Número de operación aleatorio
 document.getElementById("operacion").textContent =
   Math.floor(10000000 + Math.random() * 90000000);
 
-// Promoción
+// Promoción aleatoria
 const promociones = [
   "imagen/1.jpg",
   "imagen/kevin2.jpg",
@@ -58,6 +60,10 @@ const promociones = [
 document.getElementById("promo-img").src =
   promociones[Math.floor(Math.random() * promociones.length)];
 
+// 🌟 Función para compartir como imagen
+const btnCompartir = document.getElementById("btnCompartir");
+btnCompartir.addEventListener("click", compartir);
+
 async function compartir() {
   const comprobante = document.getElementById("comprobante");
 
@@ -67,29 +73,29 @@ async function compartir() {
   }
 
   try {
+    // Captura todo el comprobante en alta resolución
     const canvas = await html2canvas(comprobante, {
-      scale: 2,
-      useCORS: true
+      scale: 3,       // aumenta resolución
+      useCORS: true,  // permite imágenes externas
+      logging: true,
+      scrollY: -window.scrollY
     });
 
-    const blob = await new Promise(resolve =>
-      canvas.toBlob(resolve, "image/png")
-    );
+    const blob = await new Promise(resolve => canvas.toBlob(resolve, "image/png"));
 
-    const file = new File([blob], "comprobante.png", {
-      type: "image/png"
-    });
+    const file = new File([blob], "comprobante.png", { type: "image/png" });
 
     if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      // Compartir en dispositivos que soportan la API
       await navigator.share({
         title: "Comprobante Yape",
         text: "Te comparto el comprobante.",
         files: [file]
       });
     } else {
-      // Si no soporta compartir, descargar automáticamente
+      // Descargar automáticamente si no se puede compartir
       const link = document.createElement("a");
-      link.href = canvas.toDataURL("image/png");
+      link.href = URL.createObjectURL(blob);
       link.download = "comprobante.png";
       link.click();
     }
