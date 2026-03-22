@@ -3,7 +3,7 @@ if (!localStorage.getItem("sessionToken")) {
   location.href = "/";
 }
 
-// Obtener parámetros de URL
+// Obtener parámetros
 const params = new URLSearchParams(window.location.search);
 const nombre = decodeURIComponent(params.get("nombre") || "Sin nombre");
 const telefono = decodeURIComponent(params.get("telefono") || "000000000");
@@ -60,7 +60,7 @@ const promociones = [
 document.getElementById("promo-img").src =
   promociones[Math.floor(Math.random() * promociones.length)];
 
-// 🌟 Función para compartir como imagen
+// 🌟 Compartir comprobante como imagen completa
 const btnCompartir = document.getElementById("btnCompartir");
 btnCompartir.addEventListener("click", compartir);
 
@@ -73,12 +73,14 @@ async function compartir() {
   }
 
   try {
-    // Captura todo el comprobante en alta resolución
+    // Captura todo el comprobante con alta resolución
     const canvas = await html2canvas(comprobante, {
-      scale: 3,       // aumenta resolución
-      useCORS: true,  // permite imágenes externas
+      scale: 3,             // mayor resolución
+      useCORS: true,        // permite imágenes externas
       logging: true,
-      scrollY: -window.scrollY
+      scrollY: -window.scrollY,
+      windowWidth: document.body.scrollWidth,
+      windowHeight: document.body.scrollHeight
     });
 
     const blob = await new Promise(resolve => canvas.toBlob(resolve, "image/png"));
@@ -86,7 +88,6 @@ async function compartir() {
     const file = new File([blob], "comprobante.png", { type: "image/png" });
 
     if (navigator.canShare && navigator.canShare({ files: [file] })) {
-      // Compartir en dispositivos que soportan la API
       await navigator.share({
         title: "Comprobante Yape",
         text: "Te comparto el comprobante.",
