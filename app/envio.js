@@ -103,7 +103,7 @@ function eventosMonto(){
 }
 
 function eventosBotones(){
-  btnBancos.onclick=()=>location.href="envio.html";
+  btnBancos.onclick=()=>location.href="envío";
   btnYapear.onclick=enviarYape;
 }
 
@@ -141,7 +141,7 @@ function enviarYape(){
         fecha:firebase.firestore.Timestamp.now()
       }))
       .then(()=>{
-        location.href=`comprobante.html?nombre=${encodeURIComponent(nombre)}&telefono=${encodeURIComponent(tel)}&monto=${monto}&estado=${encodeURIComponent(msg)}`;
+        location.href=`comprobante?nombre=${encodeURIComponent(nombre)}&telefono=${encodeURIComponent(tel)}&monto=${monto}&estado=${encodeURIComponent(msg)}`;
       });
 
     });
