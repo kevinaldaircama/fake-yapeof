@@ -4,47 +4,125 @@ if (!localStorage.getItem("sessionToken")) {
 
 // Obtener parámetros
 const params = new URLSearchParams(window.location.search);
-const nombre = decodeURIComponent(params.get("nombre") || "Sin nombre");
-const telefono = decodeURIComponent(params.get("telefono") || "000000000");
-const monto = decodeURIComponent(params.get("monto") || "0");
+
+const nombre = decodeURIComponent(
+  params.get("nombre") || "Sin nombre"
+);
+
+const telefono = decodeURIComponent(
+  params.get("telefono") || "000000000"
+);
+
+const monto = decodeURIComponent(
+  params.get("monto") || "0"
+);
+
+// ✅ FALTABA ESTO
+const destino = decodeURIComponent(
+  params.get("destino") || "---"
+);
+
 
 // Mostrar datos
 document.getElementById("nombre").textContent = nombre;
+
 const montoNum = parseFloat(monto);
+
 document.getElementById("monto").textContent =
-  montoNum % 1 === 0 ? montoNum : montoNum.toFixed(2);
-document.getElementById("telefono").textContent = `*** ***${telefono.slice(-3)}`;
+  montoNum % 1 === 0
+    ? montoNum
+    : montoNum.toFixed(2);
+
+document.getElementById("telefono").textContent =
+  `*** ***${telefono.slice(-3)}`;
+
+// ✅ MOSTRAR DESTINO
+document.getElementById("destino").textContent =
+  destino;
+
 
 // Fecha y hora
 const fechaObj = new Date();
+
 document.querySelector("#fecha span").textContent =
-  fechaObj.toLocaleDateString('es-PE', { day:'2-digit', month:'short', year:'numeric' });
+  fechaObj.toLocaleDateString(
+    'es-PE',
+    {
+      day:'2-digit',
+      month:'short',
+      year:'numeric'
+    }
+  );
 
 document.querySelector("#hora span").textContent =
-  fechaObj.toLocaleTimeString('es-PE', { hour:'2-digit', minute:'2-digit', hour12:true });
-const estado = decodeURIComponent(params.get("estado") || "");
+  fechaObj.toLocaleTimeString(
+    'es-PE',
+    {
+      hour:'2-digit',
+      minute:'2-digit',
+      hour12:true
+    }
+  );
+
+const estado =
+decodeURIComponent(
+  params.get("estado") || ""
+);
+
+
 // Código seguridad
-const codigo = Math.floor(Math.random() * 900 + 100).toString();
-const cajas = document.getElementById("codigo-seguridad").children;
+const codigo =
+Math.floor(Math.random() * 900 + 100)
+.toString();
+
+const cajas =
+document.getElementById(
+"codigo-seguridad"
+).children;
+
 for (let i = 0; i < 3; i++) {
   cajas[i].textContent = codigo[i];
 }
 
+
 // 🎉 Confeti
 function lanzarConfeti() {
-  confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+
+  confetti({
+    particleCount: 150,
+    spread: 70,
+    origin: { y: 0.6 }
+  });
 
   setTimeout(() => {
-    confetti({ particleCount: 100, angle: 60, spread: 55, origin: { x: 0 } });
-    confetti({ particleCount: 100, angle: 120, spread: 55, origin: { x: 1 } });
+
+    confetti({
+      particleCount: 100,
+      angle: 60,
+      spread: 55,
+      origin: { x: 0 }
+    });
+
+    confetti({
+      particleCount: 100,
+      angle: 120,
+      spread: 55,
+      origin: { x: 1 }
+    });
+
   }, 300);
 }
 
 lanzarConfeti();
 
+
 // Operación
 document.getElementById("operacion").textContent =
-  Math.floor(10000000 + Math.random() * 90000000);
+  Math.floor(
+    10000000 +
+    Math.random() * 90000000
+  );
+
 
 // Promoción
 const promociones = [
@@ -57,45 +135,84 @@ const promociones = [
 ];
 
 document.getElementById("promo-img").src =
-  promociones[Math.floor(Math.random() * promociones.length)];
-  
+  promociones[
+    Math.floor(
+      Math.random() *
+      promociones.length
+    )
+  ];
+
+
+// Estado opcional
 if (estado) {
-  document.getElementById("estado-box").style.display = "flex";
-  document.getElementById("estado-texto").textContent = estado;
+
+  document.getElementById(
+    "estado-box"
+  ).style.display = "flex";
+
+  document.getElementById(
+    "estado-texto"
+  ).textContent = estado;
+
 }
+
+
+// Compartir imagen
+
 async function compartir() {
 
   const comprobante =
-  document.getElementById("comprobante");
+  document.getElementById(
+    "comprobante"
+  );
 
   const canvas =
-  await html2canvas(comprobante,{
-    scale:3,
-    useCORS:true,
-    backgroundColor:"#650D89"
-  });
+  await html2canvas(
+    comprobante,
+    {
+      scale:3,
+      useCORS:true,
+      backgroundColor:"#650D89"
+    }
+  );
 
   const blob =
   await new Promise(r =>
-  canvas.toBlob(r,"image/png"));
+    canvas.toBlob(
+      r,
+      "image/png"
+    )
+  );
 
   const file =
-  new File([blob],
-  "comprobante.png",
-  {type:"image/png"});
+  new File(
+    [blob],
+    "comprobante.png",
+    {type:"image/png"}
+  );
 
-  if(navigator.share &&
-     navigator.canShare?.({files:[file]})){
+  if (
+    navigator.share &&
+    navigator.canShare?.({
+      files:[file]
+    })
+  ){
 
     navigator.share({
       files:[file]
     });
 
-  }else{
+  } else {
 
-    const a=document.createElement("a");
-    a.href=URL.createObjectURL(blob);
-    a.download="comprobante.png";
+    const a =
+    document.createElement("a");
+
+    a.href =
+    URL.createObjectURL(blob);
+
+    a.download =
+    "comprobante.png";
+
     a.click();
 
   }
