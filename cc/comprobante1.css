@@ -49,13 +49,31 @@ body{
 }
 
 .monto{
-    font-size:48px;
+    display:flex;
+    align-items:flex-start;
+    gap:6px;
     font-weight:bold;
+    margin-top:5px;
+}
+
+.sol{
+    font-size:22px;
+    margin-top:8px;
+    font-weight:600;
+    color:#3a3a3a;
+}
+
+#monto{
+    font-size:52px;
+    font-weight:700;
+    color:#3a3a3a;
+    line-height:1;
 }
 
 .nombre{
-    font-size:22px;
-    margin-top:10px;
+    font-size:17px;
+    margin-top:8px;
+    font-weight:500;
 }
 
 .fecha{
@@ -81,12 +99,12 @@ body{
 
 .banner{
     margin:15px;
-    background:#4a146c;
-    border-radius:15px;
-    padding:10px;
+    padding:0;
+    background:none;
 }
 
 .banner-img{
     width:100%;
-    border-radius:12px;
+    border-radius:18px;
+    display:block;
 }
