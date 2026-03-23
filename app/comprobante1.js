@@ -97,10 +97,12 @@ Math.random()*90000000
 );
 
 
-const promociones = [
-"https://roddox.es/imagen/1.jpg",
-"https://roddox.es/imagen/yapelog.png",
-"https://roddox.es/imagen/1.jpg"
+const promociones = [  
+  "imagen/kevin2.jpg",  
+  "imagen/kevin.jpg",  
+  "imagen/kevin2.jpg",  
+  "imagen/IMG-20260125-WA0045.jpg",  
+  "imagen/IMG-20260118-WA0031.jpg"
 ];
 
 document.querySelector(".banner-img").src =
