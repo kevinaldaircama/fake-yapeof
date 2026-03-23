@@ -1,104 +1,92 @@
-body {
-  margin: 0;
-  font-family: 'Segoe UI', sans-serif;
-  background-color: #650D89;
-  display: flex;
-  justify-content: center;
+body{
+    margin:0;
+    font-family: Arial, Helvetica, sans-serif;
+    background:#5b1c82;
 }
 
-.container {
-  max-width: 400px;
-  width: 100%;
-  padding: 15px;
-  background-color: #650D89;
+.top{
+    height:90px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:15px;
 }
 
-.logo {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
+.logo{
+    height:45px;
 }
 
-.cerrar {
-  width: 35px;
-  height: 35px;
-  background-color: rgba(255,255,255,0.2);
-  border-radius: 50%;
-  color: white;
-  font-size: 20px;
-  text-align: center;
-  line-height: 35px;
+.close{
+    width:45px;
+    height:45px;
+    border-radius:50%;
+    background:rgba(255,255,255,0.2);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:white;
+    font-size:20px;
 }
 
-.card {
-  background: white;
-  border-radius: 15px;
-  padding: 20px;
+.card{
+    background:white;
+    margin:-25px 15px 15px 15px;
+    border-radius:20px;
+    padding:20px;
 }
 
-.card h2 {
-  color: #650D89;
-  font-size: 18px;
-  display: flex;
-  justify-content: space-between;
+.share{
+    float:right;
+    color:#00a884;
+    font-size:18px;
+    cursor:pointer;
 }
 
-.monto {
-  display: flex;
-  gap: 5px;
-  font-weight: bold;
+.title{
+    color:#7a1fa2;
+    font-size:24px;
+    font-weight:bold;
 }
 
-.simbolo {
-  font-size: 28px;
+.monto{
+    font-size:48px;
+    font-weight:bold;
 }
 
-#monto {
-  font-size: 48px;
+.nombre{
+    font-size:22px;
+    margin-top:10px;
 }
 
-.nombre {
-  font-size: 24px;
-  font-weight: bold;
+.fecha{
+    margin-top:10px;
+    color:#555;
 }
 
-.datos {
-  font-size: 14px;
-  color: gray;
+.line{
+    margin:15px 0;
+    border-top:1px solid #ddd;
 }
 
-.share {
-  color: #00bfa5;
-  font-weight: bold;
-  cursor: pointer;
+.label{
+    color:#777;
+    font-size:14px;
 }
 
-.seguridad-box {
-  margin: 20px 0;
-  border-top: 1px solid #ccc;
-  border-bottom: 1px solid #ccc;
-  padding: 10px 0;
-  display: flex;
-  justify-content: space-between;
+.row{
+    display:flex;
+    justify-content:space-between;
+    margin:6px 0;
 }
 
-.codigo {
-  display: flex;
-  gap: 5px;
+.banner{
+    margin:15px;
+    background:#4a146c;
+    border-radius:15px;
+    padding:10px;
 }
 
-.caja {
-  width: 30px;
-  height: 30px;
-  background: #eee;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.footer-img {
-  width: 100%;
-  border-radius: 15px;
-  margin-top: 20px;
+.banner-img{
+    width:100%;
+    border-radius:12px;
 }
