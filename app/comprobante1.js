@@ -25,9 +25,10 @@ document.getElementById("nombre").textContent = nombre;
 const montoNum = parseFloat(monto);
 
 document.getElementById("monto").textContent =
-  montoNum % 1 === 0
+  "S/ " +
+  (montoNum % 1 === 0
     ? montoNum
-    : montoNum.toFixed(2);
+    : montoNum.toFixed(2));
 
 document.getElementById("telefono").textContent =
   `*** ***${telefono.slice(-3)}`;
