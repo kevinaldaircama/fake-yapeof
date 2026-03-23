@@ -1,8 +1,6 @@
 if (!localStorage.getItem("sessionToken")) {
   location.href = "/";
 }
-
-// Obtener parámetros
 const params = new URLSearchParams(window.location.search);
 
 const nombre = decodeURIComponent(
@@ -17,13 +15,11 @@ const monto = decodeURIComponent(
   params.get("monto") || "0"
 );
 
-// ✅ FALTABA ESTO
 const destino = decodeURIComponent(
   params.get("destino") || "---"
 );
 
 
-// Mostrar datos
 document.getElementById("nombre").textContent = nombre;
 
 const montoNum = parseFloat(monto);
@@ -36,185 +32,132 @@ document.getElementById("monto").textContent =
 document.getElementById("telefono").textContent =
   `*** ***${telefono.slice(-3)}`;
 
-// ✅ MOSTRAR DESTINO
 document.getElementById("destino").textContent =
   destino;
 
 
-// Fecha y hora
 const fechaObj = new Date();
 
-document.querySelector("#fecha span").textContent =
+document.getElementById("fecha").textContent =
   fechaObj.toLocaleDateString(
-    'es-PE',
+    "es-PE",
     {
-      day:'2-digit',
-      month:'short',
-      year:'numeric'
+      day:"2-digit",
+      month:"short",
+      year:"numeric"
     }
   );
 
-document.querySelector("#hora span").textContent =
+document.getElementById("hora").textContent =
   fechaObj.toLocaleTimeString(
-    'es-PE',
+    "es-PE",
     {
-      hour:'2-digit',
-      minute:'2-digit',
+      hour:"2-digit",
+      minute:"2-digit",
       hour12:true
     }
   );
 
-const estado =
-decodeURIComponent(
-  params.get("estado") || ""
-);
 
+function lanzarConfeti(){
 
-// Código seguridad
-const codigo =
-Math.floor(Math.random() * 900 + 100)
-.toString();
+confetti({
+particleCount:150,
+spread:70,
+origin:{y:0.6}
+});
 
-const cajas =
-document.getElementById(
-"codigo-seguridad"
-).children;
+setTimeout(()=>{
 
-for (let i = 0; i < 3; i++) {
-  cajas[i].textContent = codigo[i];
-}
+confetti({
+particleCount:100,
+angle:60,
+spread:55,
+origin:{x:0}
+});
 
+confetti({
+particleCount:100,
+angle:120,
+spread:55,
+origin:{x:1}
+});
 
-// 🎉 Confeti
-function lanzarConfeti() {
+},300);
 
-  confetti({
-    particleCount: 150,
-    spread: 70,
-    origin: { y: 0.6 }
-  });
-
-  setTimeout(() => {
-
-    confetti({
-      particleCount: 100,
-      angle: 60,
-      spread: 55,
-      origin: { x: 0 }
-    });
-
-    confetti({
-      particleCount: 100,
-      angle: 120,
-      spread: 55,
-      origin: { x: 1 }
-    });
-
-  }, 300);
 }
 
 lanzarConfeti();
 
 
-// Operación
 document.getElementById("operacion").textContent =
-  Math.floor(
-    10000000 +
-    Math.random() * 90000000
-  );
+Math.floor(
+10000000 +
+Math.random()*90000000
+);
 
 
-// Promoción
 const promociones = [
-  "imagen/1.jpg",
-  "imagen/kevin2.jpg",
-  "imagen/kevin.jpg",
-  "imagen/kevin2.jpg",
-  "imagen/IMG-20260125-WA0045.jpg",
-  "imagen/IMG-20260118-WA0031.jpg"
+"https://roddox.es/imagen/1.jpg",
+"https://roddox.es/imagen/yapelog.png",
+"https://roddox.es/imagen/1.jpg"
 ];
 
-document.getElementById("promo-img").src =
-  promociones[
-    Math.floor(
-      Math.random() *
-      promociones.length
-    )
-  ];
+document.querySelector(".banner-img").src =
+promociones[
+Math.floor(
+Math.random()*promociones.length
+)
+];
 
 
-// Estado opcional
-if (estado) {
+async function compartir(){
 
-  document.getElementById(
-    "estado-box"
-  ).style.display = "flex";
+const comp =
+document.getElementById("comprobante");
 
-  document.getElementById(
-    "estado-texto"
-  ).textContent = estado;
+const canvas =
+await html2canvas(
+comp,
+{
+scale:3,
+useCORS:true,
+backgroundColor:"#5b1c82"
+}
+);
+
+const blob =
+await new Promise(r =>
+canvas.toBlob(r,"image/png")
+);
+
+const file =
+new File(
+[blob],
+"comprobante.png",
+{type:"image/png"}
+);
+
+if(
+navigator.share &&
+navigator.canShare?.({files:[file]})
+){
+
+navigator.share({files:[file]});
+
+}else{
+
+const a =
+document.createElement("a");
+
+a.href =
+URL.createObjectURL(blob);
+
+a.download =
+"comprobante.png";
+
+a.click();
 
 }
-
-
-// Compartir imagen
-
-async function compartir() {
-
-  const comprobante =
-  document.getElementById(
-    "comprobante"
-  );
-
-  const canvas =
-  await html2canvas(
-    comprobante,
-    {
-      scale:3,
-      useCORS:true,
-      backgroundColor:"#650D89"
-    }
-  );
-
-  const blob =
-  await new Promise(r =>
-    canvas.toBlob(
-      r,
-      "image/png"
-    )
-  );
-
-  const file =
-  new File(
-    [blob],
-    "comprobante.png",
-    {type:"image/png"}
-  );
-
-  if (
-    navigator.share &&
-    navigator.canShare?.({
-      files:[file]
-    })
-  ){
-
-    navigator.share({
-      files:[file]
-    });
-
-  } else {
-
-    const a =
-    document.createElement("a");
-
-    a.href =
-    URL.createObjectURL(blob);
-
-    a.download =
-    "comprobante.png";
-
-    a.click();
-
-  }
 
 }
