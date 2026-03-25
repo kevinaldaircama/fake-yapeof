@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Pagar</title>
+</head>
+<body>
+
+<h2>Comprar plan</h2>
+
+<button onclick="pagar()">Pagar 10 soles</button>
+
+<script>
+
+async function pagar() {
+
+  const res = await fetch("https://roddox.es/crear_pago", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      plan: "Plan Premium",
+      precio: 10
+    })
+  });
+
+  const data = await res.json();
+
+  if (data.id) {
+
+    window.location.href =
+    "https://www.mercadopago.com.pe/checkout/v1/redirect?pref_id=" + data.id;
+
+  } else {
+
+    alert("Error creando pago");
+
+  }
+
+}
+
+</script>
+
+</body>
+</html>
