@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Planes y Suscripciones</title>
+
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#720e9e">
 <link rel="icon" type="image/png" href="imagen/app_icon_xxxhdpi.png">
@@ -20,99 +21,105 @@ Planes y Suscripciones
 
 <main class="container">
 
+
 <!-- PLAN USUARIO -->
 <div class="plan">
-  <span class="badge">Recomendado</span>
-  <h2>Plan Usuario</h2>
+<span class="badge">Recomendado</span>
 
-  <div class="details">
-    <p><i class="fa fa-check-circle"></i> Actualizaciones gratis (posible pago)</p>
-    <p><i class="fa fa-check-circle"></i> canal de información</p>
-    <p><i class="fa fa-check-circle"></i> Soporte técnico</p>
-    <p><i class="fa fa-check-circle"></i> Guía incluida</p>
- <p><i class="fa fa-check-circle"></i> token adicional (incluye otro precio)</p>
- 
-  </div>
+<h2>Plan Usuario</h2>
 
-  <p class="price">S/ 30</p>
-  <div class="btn" onclick="openModal('Plan Usuario')">Elegir Plan</div>
+<div class="details">
+<p><i class="fa fa-check-circle"></i> Actualizaciones gratis</p>
+<p><i class="fa fa-check-circle"></i> canal info</p>
+<p><i class="fa fa-check-circle"></i> Soporte</p>
+<p><i class="fa fa-check-circle"></i> Guía</p>
 </div>
 
-<!-- PLAN ADMIN -->
+<p class="price">S/ 30</p>
+
+<div class="btn"
+onclick="pagar('Plan Usuario',30)">
+Elegir Plan
+</div>
+
+</div>
+
+
+
+<!-- PLAN SELLER -->
 <div class="plan">
-  <span class="badge">Profesional</span>
-  <h2>Plan seller</h2>
+<span class="badge">Profesional</span>
 
-  <div class="details">
-    <p><i class="fa fa-check-circle"></i> Acceso total al panel</p>
-    <p><i class="fa fa-check-circle"></i> Ayuda personalizada</p>
-    <p><i class="fa fa-check-circle"></i> Material de entrega</p>
-  </div>
+<h2>Plan seller</h2>
 
-  <p class="price">S/ 90</p>
-  <div class="btn" onclick="openModal('Plan seller')">Seleccionar</div>
+<div class="details">
+<p><i class="fa fa-check-circle"></i> Panel total</p>
+<p><i class="fa fa-check-circle"></i> Soporte</p>
+<p><i class="fa fa-check-circle"></i> Material</p>
 </div>
+
+<p class="price">S/ 90</p>
+
+<div class="btn"
+onclick="pagar('Plan seller',90)">
+Seleccionar
+</div>
+
+</div>
+
+
 
 <!-- PLAN EMPRENDEDOR -->
 <div class="plan">
-  <span class="badge">Negocios</span>
-  <h2>Plan Emprendedor</h2>
 
-  <div class="details">
-    <p><i class="fa fa-check-circle"></i> Script para VPS</p>
-    <p><i class="fa fa-check-circle"></i> Soporte técnico</p>
-    <p><i class="fa fa-check-circle"></i> Video guía</p>
-  </div>
+<span class="badge">Negocios</span>
 
-  <p class="price">S/ 140</p>
-  <div class="btn" onclick="openModal('Plan Emprendedor')">Comenzar</div>
+<h2>Plan Emprendedor</h2>
+
+<div class="details">
+<p><i class="fa fa-check-circle"></i> Script VPS</p>
+<p><i class="fa fa-check-circle"></i> Soporte</p>
+<p><i class="fa fa-check-circle"></i> Video</p>
 </div>
+
+<p class="price">S/ 140</p>
+
+<div class="btn"
+onclick="pagar('Plan Emprendedor',140)">
+Comenzar
+</div>
+
+</div>
+
+
 
 <!-- PLAN DESARROLLADOR -->
 <div class="plan">
-  <span class="badge">Premium</span>
-  <h2>Plan Desarrollador</h2>
 
-  <div class="details">
-    <p><i class="fa fa-check-circle"></i> Código fuente (licencia)</p>
-    <p><i class="fa fa-check-circle"></i> Enseñanza incluído</p>
-    <p><i class="fa fa-info-circle"></i> Mantenimiento constante (costo adicional)</p>
-  </div>
+<span class="badge">Premium</span>
 
-  <p class="price">S/ 210</p>
-  <div class="btn" onclick="openModal('Plan Desarrollador')">Obtener</div>
+<h2>Plan Desarrollador</h2>
+
+<div class="details">
+<p><i class="fa fa-check-circle"></i> Código fuente</p>
+<p><i class="fa fa-check-circle"></i> Enseñanza</p>
+<p><i class="fa fa-info-circle"></i> Mantenimiento</p>
 </div>
+
+<p class="price">S/ 210</p>
+
+<div class="btn"
+onclick="pagar('Plan Desarrollador',210)">
+Obtener
+</div>
+
+</div>
+
 
 </main>
 
-<!-- MODAL -->
-<div id="modal">
-  <div class="modal-box">
-    <h3 id="modalTitle"></h3>
-
-    <p>
-      Comunícate con nosotros para adquirir este plan.
-    </p>
-
-    <div class="socials">
-      <a href="https://wa.me/51994031672" target="_blank">
-        <i class="fab fa-whatsapp"></i>
-      </a>
-
-      <a href="https://t.me/KTTOFICIAL" target="_blank">
-        <i class="fab fa-telegram"></i>
-      </a>
-
-      <a href="https://youtube.com/@kevintechtutorials" target="_blank">
-        <i class="fab fa-youtube"></i>
-      </a>
-    </div>
-
-    <button class="close" onclick="closeModal()">Cerrar</button>
-  </div>
-</div>
 
 <script src="app/planes.js"></script>
 
 </body>
-</html>
+  </html>
