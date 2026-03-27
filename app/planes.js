@@ -3,7 +3,7 @@ async function pagar(plan, precio){
 try{
 
 let r = await fetch(
-"http://38.250.161.221:4906/crear_pago",
+"http://38.250.161.221:3000/crear_pago",
 {
 method:"POST",
 
