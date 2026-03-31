@@ -3,145 +3,134 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Pago exitoso</title>
-
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
 <style>
-
 body{
-margin:0;
-font-family:Segoe UI, Arial;
-background:linear-gradient(135deg,#4a00e0,#8e2de2);
-height:100vh;
-display:flex;
-align-items:center;
-justify-content:center;
-color:white;
+  margin:0;
+  font-family:Segoe UI, Arial;
+  background:linear-gradient(135deg,#4a00e0,#8e2de2);
+  height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:white;
 }
-
 .box{
-
-background:rgba(255,255,255,.1);
-backdrop-filter:blur(10px);
-padding:40px;
-border-radius:20px;
-text-align:center;
-width:90%;
-max-width:420px;
-box-shadow:0 10px 30px rgba(0,0,0,.4);
-
-animation:zoom 0.5s;
-
+  background:rgba(255,255,255,.1);
+  backdrop-filter:blur(10px);
+  padding:40px;
+  border-radius:20px;
+  text-align:center;
+  width:90%;
+  max-width:420px;
+  box-shadow:0 10px 30px rgba(0,0,0,.4);
+  animation:zoom 0.5s;
 }
-
 @keyframes zoom{
-from{transform:scale(.7);opacity:0}
-to{transform:scale(1);opacity:1}
+  from{transform:scale(.7);opacity:0}
+  to{transform:scale(1);opacity:1}
 }
-
 .icon{
-
-font-size:70px;
-color:#00ff9d;
-margin-bottom:10px;
-
+  font-size:70px;
+  color:#00ff9d;
+  margin-bottom:10px;
 }
-
-h1{
-margin:10px 0;
-}
-
-p{
-opacity:.9;
-}
-
+h1{margin:10px 0;}
+p{opacity:.9;}
 .btn{
-
-margin-top:20px;
-padding:14px;
-border-radius:12px;
-cursor:pointer;
-background:linear-gradient(135deg,#00c6ff,#0072ff);
-font-size:16px;
-font-weight:bold;
-
+  margin-top:20px;
+  padding:14px;
+  border-radius:12px;
+  cursor:pointer;
+  background:linear-gradient(135deg,#00c6ff,#0072ff);
+  font-size:16px;
+  font-weight:bold;
 }
-
-.btn i{
-margin-right:8px;
-}
-
-.btn:hover{
-opacity:.9;
-}
-
+.btn i{margin-right:8px;}
+.btn:hover{opacity:.9;}
 .link{
-
-margin-top:15px;
-display:block;
-color:#fff;
-text-decoration:underline;
-cursor:pointer;
-
+  margin-top:15px;
+  display:block;
+  color:#fff;
+  text-decoration:underline;
+  cursor:pointer;
 }
-
+#userToken{
+  margin-top:15px;
+  padding:10px;
+  width:100%;
+  text-align:center;
+  border-radius:10px;
+  border:none;
+  font-weight:bold;
+  font-size:18px;
+  background:rgba(255,255,255,0.2);
+  color:white;
+}
 </style>
-
 </head>
 <body>
 
-
 <div class="box">
+  <div class="icon">
+    <i class="fa-solid fa-circle-check"></i>
+  </div>
 
-<div class="icon">
-<i class="fa-solid fa-circle-check"></i>
+  <h1>¡Pago Exitoso!</h1>
+  <p>Tu pago fue registrado correctamente</p>
+  <p>A continuación está tu token. Se ha copiado automáticamente:</p>
+
+  <input type="text" id="userToken" readonly/>
+
+  <button class="btn" onclick="copiarToken()">
+    <i class="fa-solid fa-copy"></i> Copiar token
+  </button>
+
+  <div class="link" onclick="location.href='/planes'">Volver a planes</div>
 </div>
-
-<h1>Pago exitoso</h1>
-
-<p>
-Tu pago fue registrado correctamente
-</p>
-
-<p>
-Comunícate con el propietario para activar tu plan
-</p>
-
-
-<div class="btn"
-onclick="irContacto()">
-
-<i class="fa-solid fa-headset"></i>
-
-Contactar propietario
-
-</div>
-
-
-<div class="link"
-onclick="location.href='/'">
-
-Volver al inicio
-
-</div>
-
-
-</div>
-
-
 
 <script>
-
-function irContacto(){
-
-location.href="https://wa.me/51994031672";
-
+// Obtener token desde la URL
+function getTokenFromUrl() {
+  const params = new URLSearchParams(window.location.search);
+  return params.get("token");
 }
 
-</script>
+// Copiar token al portapapeles
+function copiarToken() {
+  const tokenInput = document.getElementById("userToken");
+  tokenInput.select();
+  document.execCommand("copy");
+  alert("Token copiado ✅");
+}
 
+// Al cargar la página
+window.addEventListener("load", ()=>{
+  const token = getTokenFromUrl();
+
+  // Si no hay token en URL, redirige a planes
+  if(!token){
+    location.href="/planes";
+    return;
+  }
+
+  // Guardamos el token en sessionStorage para detectar recarga
+  if(sessionStorage.getItem("tokenUsado")){
+    location.href="/planes";
+    return;
+  }
+
+  const input = document.getElementById("userToken");
+  input.value = token;
+
+  copiarToken(); // copia automático
+
+  // Marcamos que ya se mostró el token
+  sessionStorage.setItem("tokenUsado", "true");
+});
+</script>
 
 </body>
 </html>
