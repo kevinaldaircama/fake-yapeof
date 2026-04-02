@@ -14,14 +14,54 @@
 
 </head>
 <body>
+<!-- 🔥 BOTÓN FLOTANTE DE AYUDA -->
+<a href="soporte" class="help-btn">
+  <i class="fa-solid fa-headset"></i>
+</a>
 
+<style>
+.help-btn{
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg,#ff4b5c,#ff6a00);
+  border-radius: 50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:white;
+  font-size:26px;
+  box-shadow: 0 8px 20px rgba(0,0,0,.3);
+  cursor:pointer;
+  z-index:9999;
+  animation: float 2s infinite ease-in-out;
+}
+
+.help-btn:hover{
+  transform: scale(1.1);
+  opacity: .9;
+}
+
+@keyframes float{
+  0%{ transform: translateY(0); }
+  50%{ transform: translateY(-5px); }
+  100%{ transform: translateY(0); }
+}
+</style>
 <header>
 Planes y Suscripciones
 </header>
 
 <main class="container">
 
-
+<div id="loader">
+  <div class="loader-box">
+    <div class="spinner"></div>
+    <p id="loaderText">Cargando...</p>
+  </div>
+</div>
 <!-- PLAN USUARIO -->
 <div class="plan">
 <span class="badge">Recomendado</span>
@@ -122,4 +162,4 @@ Obtener
 <script src="app/planes.js"></script>
 
 </body>
-  </html>
+</html>
