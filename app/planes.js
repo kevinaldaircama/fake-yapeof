@@ -11,6 +11,18 @@ if(payment_id){
 // 🔥 CONTROL DE INTERVALO
 let intervalo = null;
 
+/* =========================
+   🔥 DETECTAR PAGO EXISTENTE
+========================= */
+
+// 👉 SI YA HAY UN PAGO GUARDADO Y NO HAY STATUS
+const pagoGuardado = localStorage.getItem("pago_id");
+
+if(pagoGuardado && !status){
+  mostrarPendiente();
+  iniciarVerificacion();
+}
+
 // ✅ PAGO EXITOSO
 if(status === "approved"){
   mostrarExito();
@@ -56,7 +68,7 @@ if(status === "failure"){
   `;
 }
 
-// 🔥 LIMPIAR URL (DESPUÉS DE PROCESAR)
+// 🔥 LIMPIAR URL
 setTimeout(() => {
   if(status){
     window.history.replaceState({}, document.title, "planes.html");
@@ -106,6 +118,9 @@ function mostrarExito(){
       </div>
     </div>
   `;
+
+  // 🔥 limpiar pago después de éxito
+  localStorage.removeItem("pago_id");
 }
 
 function continuar(){
@@ -116,7 +131,6 @@ function continuar(){
     return;
   }
 
-  // 🔥 ENVÍA EL ID A SUCCESS
   window.location.href = "success.html?payment_id=" + id;
 }
 
@@ -132,14 +146,28 @@ function mostrarPendiente(){
       font-family:Segoe UI;
     ">
       <div style="text-align:center">
-        <h1 id="estado">⏳ Esperando pago...</h1>
-        <p>Realiza el pago con tu código de PagoEfectivo</p>
-        <p>Esta pantalla se actualizará automáticamente</p>
+        <h1 id="estado">⏳ Pago pendiente</h1>
+        <p>Paga tu código en agente o banca móvil</p>
+        <p>Se activará automáticamente al pagar</p>
+
+        <button onclick="verificarPagoManual()" 
+        style="
+          margin-top:15px;
+          padding:12px;
+          border:none;
+          border-radius:10px;
+          background:#00c6ff;
+          color:white;
+          font-weight:bold;
+          cursor:pointer;
+        ">
+        Ya pagué
+        </button>
 
         <button onclick="location.href='planes.html'" 
         style="
-          margin-top:20px;
-          padding:12px 20px;
+          margin-top:10px;
+          padding:12px;
           border:none;
           border-radius:10px;
           background:#667eea;
@@ -162,14 +190,14 @@ function animarEspera(){
     dots = (dots + 1) % 4;
     const el = document.getElementById("estado");
     if(el){
-      el.innerText = "⏳ Esperando pago" + ".".repeat(dots);
+      el.innerText = "⏳ Pago pendiente" + ".".repeat(dots);
     }
   }, 500);
 }
 
 
 /* =========================
-   🔥 VERIFICACIÓN AUTOMÁTICA
+   🔥 VERIFICACIÓN
 ========================= */
 
 async function verificarPago(){
@@ -188,7 +216,19 @@ async function verificarPago(){
   }catch(e){
     console.error("Error verificando pago", e);
   }
+}
 
+// 🔥 BOTÓN MANUAL
+async function verificarPagoManual(){
+  await verificarPago();
+
+  const id = localStorage.getItem("pago_id");
+  const r = await fetch("https://yapefk.kevintechtutorials.fun/verificar_pago/" + id);
+  const data = await r.json();
+
+  if(data.status !== "approved"){
+    alert("Aún no se refleja el pago");
+  }
 }
 
 function iniciarVerificacion(){
@@ -209,20 +249,27 @@ function detenerVerificacion(){
 ========================= */
 
 async function pagar(plan, precio){  
-  
+
+  // 🔥 EVITAR DUPLICADOS
+  const existente = localStorage.getItem("pago_id");
+  if(existente){
+    alert("Ya tienes un pago en proceso");
+    return;
+  }
+
   const loader = document.getElementById("loader");  
   const text = document.getElementById("loaderText");  
-  
+
   try{  
-  
+
     loader.style.display = "flex";  
-  
+
     text.innerText = "Cargando...";  
     await new Promise(r => setTimeout(r, 2000));  
-  
+
     text.innerText = "Creando pago...";  
     await new Promise(r => setTimeout(r, 2000));  
-  
+
     let r = await fetch("https://yapefk.kevintechtutorials.fun/crear_pago", {  
       method:"POST",  
       headers:{  
@@ -230,30 +277,30 @@ async function pagar(plan, precio){
       },  
       body: JSON.stringify({ plan, precio })  
     });  
-  
+
     if(!r.ok){
       throw new Error("Error servidor");
     }
-  
+
     let data = await r.json();  
-  
+
     if(data.id){
 
       localStorage.setItem("pago_id", data.id);
 
       text.innerText = "Redirigiendo...";
       await new Promise(r => setTimeout(r, 1000));
-  
+
       window.location =
       "https://www.mercadopago.com.pe/checkout/v1/redirect?pref_id=" + data.id;
-  
+
     }else{
       throw new Error("No se creó el pago");
     }
-  
+
   }catch(e){
     console.error(e);
     alert("Error al conectar con servidor");
     loader.style.display = "none";
   }
-  }
+}
