@@ -88,17 +88,17 @@ p{opacity:.9;}
     <i class="fa-solid fa-copy"></i> Copiar token
   </button>
 
-  <div class="link" onclick="location.href='/planes'">Volver a planes</div>
+  <div class="link" onclick="location.href='/'">Volver al inicio</div>
 </div>
 
 <script>
-// Obtener token desde la URL
-function getTokenFromUrl() {
+// 🔥 OBTENER PAYMENT_ID DESDE LA URL
+function getPaymentId() {
   const params = new URLSearchParams(window.location.search);
-  return params.get("token");
+  return params.get("payment_id");
 }
 
-// Copiar token al portapapeles
+// 🔥 COPIAR TOKEN
 function copiarToken() {
   const tokenInput = document.getElementById("userToken");
   tokenInput.select();
@@ -106,31 +106,44 @@ function copiarToken() {
   alert("Token copiado ✅");
 }
 
-// Al cargar la página
-window.addEventListener("load", ()=>{
-  const token = getTokenFromUrl();
+// 🔥 OBTENER TOKEN DESDE TU BACKEND
+async function cargarToken() {
 
-  // Si no hay token en URL, redirige a planes
-  if(!token){
-    location.href="/planes";
+  const payment_id = getPaymentId();
+
+  if(!payment_id){
+    alert("No se encontró el ID de pago");
     return;
   }
 
-  // Guardamos el token en sessionStorage para detectar recarga
-  if(sessionStorage.getItem("tokenUsado")){
-    location.href="/planes";
-    return;
+  try{
+
+    const r = await fetch("https://yapefk.kevintechtutorials.fun/generar_token/" + payment_id);
+    const data = await r.json();
+
+    if(data.token){
+
+      const input = document.getElementById("userToken");
+      input.value = data.token;
+
+      copiarToken(); // 🔥 copia automática
+
+      // 🔥 limpiar localStorage
+      localStorage.removeItem("pago_id");
+
+    }else{
+      alert("El pago aún no está aprobado");
+    }
+
+  }catch(e){
+    console.error(e);
+    alert("Error conectando con el servidor");
   }
 
-  const input = document.getElementById("userToken");
-  input.value = token;
+}
 
-  copiarToken(); // copia automático
-
-  // Marcamos que ya se mostró el token
-  sessionStorage.setItem("tokenUsado", "true");
-});
+// 🔥 EJECUTAR AL CARGAR
+window.onload = cargarToken;
 </script>
-
 </body>
 </html>
