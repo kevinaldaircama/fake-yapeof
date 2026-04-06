@@ -4,161 +4,119 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Planes y Suscripciones</title>
-
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#720e9e">
-<link rel="icon" type="image/png" href="imagen/app_icon_xxxhdpi.png">
+<link rel="icon" href="imagen/app_icon_xxxhdpi.png">
+<link
 
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 <link rel="stylesheet" href="cc/planes.css">
 
 </head>
+
 <body>
-<!-- 🔥 BOTÓN FLOTANTE DE AYUDA -->
+
+<!-- 🔥 MODAL -->
+<div id="modalPago">
+  <div class="modal-box">
+
+    <h2>Elegir método de pago</h2>
+
+    <div class="modal-buttons">
+      <button onclick="pagarMP()" class="btn">💳 Mercado Pago</button>
+      <button onclick="pagoEfectivo()" class="btn btn-success">💵 PagoEfectivo</button>
+    </div>
+
+    <button onclick="cerrarModal()" class="close">Cancelar</button>
+
+  </div>
+</div>
+
+<!-- BOTÓN AYUDA -->
 <a href="soporte" class="help-btn">
   <i class="fa-solid fa-headset"></i>
 </a>
 
-<style>
-.help-btn{
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  width: 60px;
-  height: 60px;
-  background: linear-gradient(135deg,#ff4b5c,#ff6a00);
-  border-radius: 50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  color:white;
-  font-size:26px;
-  box-shadow: 0 8px 20px rgba(0,0,0,.3);
-  cursor:pointer;
-  z-index:9999;
-  animation: float 2s infinite ease-in-out;
-}
-
-.help-btn:hover{
-  transform: scale(1.1);
-  opacity: .9;
-}
-
-@keyframes float{
-  0%{ transform: translateY(0); }
-  50%{ transform: translateY(-5px); }
-  100%{ transform: translateY(0); }
-}
-</style>
-<header>
-Planes y Suscripciones
-</header>
-
+<header>Planes y Suscripciones</header>
 <main class="container">
 
-<div id="loader">
-  <div class="loader-box">
-    <div class="spinner"></div>
-    <p id="loaderText">Cargando...</p>
+<!-- PLAN POBLE -->
+<div class="plan">
+  <span class="badge">Inicio</span>
+  <h2>Plan Poble</h2>
+
+  <div class="details">
+    <p><i class="fa fa-user"></i> Ayuda personalizada</p>
+    <p><i class="fa fa-users"></i> Usuarios con la app</p>
+    <p><i class="fa fa-coins"></i> 1 Token</p>
+  </div>
+
+  <p class="price">S/ 20</p>
+
+  <div class="btn" onclick="pagar('Plan Poble',20)">
+    Empezar 🚀
   </div>
 </div>
-<!-- PLAN USUARIO -->
+
+
+<!-- PLAN TÍO -->
 <div class="plan">
-<span class="badge">Recomendado</span>
+  <span class="badge">Popular</span>
+  <h2>Plan Tío</h2>
 
-<h2>Plan Usuario</h2>
+  <div class="details">
+    <p><i class="fa fa-book"></i> Guía personalizada</p>
+    <p><i class="fa fa-coins"></i> 5 Tokens</p>
+    <p><i class="fa fa-infinity"></i> Ventas ilimitadas</p>
+  </div>
 
-<div class="details">
-<p><i class="fa fa-check-circle"></i> Actualizaciones gratis</p>
-<p><i class="fa fa-check-circle"></i> canal info</p>
-<p><i class="fa fa-check-circle"></i> Soporte</p>
-<p><i class="fa fa-check-circle"></i> Guía</p>
+  <p class="price">S/ 50</p>
+
+  <div class="btn" onclick="pagar('Plan Tío',50)">
+    Elegir ⭐
+  </div>
 </div>
-
-<p class="price">S/ 30</p>
-
-<div class="btn"
-onclick="pagar('Plan Usuario',30)">
-Elegir Plan
-</div>
-
-</div>
-
-
-
-<!-- PLAN SELLER -->
-<div class="plan">
-<span class="badge">Profesional</span>
-
-<h2>Plan seller</h2>
-
-<div class="details">
-<p><i class="fa fa-check-circle"></i> Panel total</p>
-<p><i class="fa fa-check-circle"></i> Soporte</p>
-<p><i class="fa fa-check-circle"></i> Material</p>
-</div>
-
-<p class="price">S/ 90</p>
-
-<div class="btn"
-onclick="pagar('Plan seller',90)">
-Seleccionar
-</div>
-
-</div>
-
 
 
 <!-- PLAN EMPRENDEDOR -->
-<div class="plan">
+<div class="plan destacado">
+  <span class="badge pro">🔥 Recomendado</span>
+  <h2>Plan Emprendedor</h2>
 
-<span class="badge">Negocios</span>
+  <div class="details">
+    <p><i class="fa fa-rocket"></i> Empezar a emprender</p>
+    <p><i class="fa fa-coins"></i> 10 Tokens</p>
+    <p><i class="fa fa-comments"></i> Chat de ayuda</p>
+  </div>
 
-<h2>Plan Emprendedor</h2>
+  <p class="price">S/ 80</p>
 
-<div class="details">
-<p><i class="fa fa-check-circle"></i> Script VPS</p>
-<p><i class="fa fa-check-circle"></i> Soporte</p>
-<p><i class="fa fa-check-circle"></i> Video</p>
-</div>
-
-<p class="price">S/ 140</p>
-
-<div class="btn"
-onclick="pagar('Plan Emprendedor',140)">
-Comenzar
-</div>
-
+  <div class="btn" onclick="pagar('Plan Emprendedor',80)">
+    Más vendido 🔥
+  </div>
 </div>
 
 
+<!-- PLAN SELLER -->
+<div class="plan premium">
+  <span class="badge premium-badge">👑 Premium</span>
+  <h2>Plan Seller</h2>
 
-<!-- PLAN DESARROLLADOR -->
-<div class="plan">
+  <div class="details">
+    <p><i class="fa fa-infinity"></i> Sistema ilimitado</p>
+    <p><i class="fa fa-coins"></i> Tokens ilimitados</p>
+    <p><i class="fa fa-headset"></i> Ayuda ilimitada</p>
+    <p><i class="fa fa-calendar"></i> Acceso 30 días</p>
+  </div>
 
-<span class="badge">Premium</span>
+  <p class="price">S/ 100</p>
 
-<h2>Plan Desarrollador</h2>
-
-<div class="details">
-<p><i class="fa fa-check-circle"></i> Código fuente</p>
-<p><i class="fa fa-check-circle"></i> Enseñanza</p>
-<p><i class="fa fa-info-circle"></i> Mantenimiento</p>
+  <div class="btn" onclick="pagar('Plan Seller',100)">
+    Ir PRO 👑
+  </div>
 </div>
-
-<p class="price">S/ 210</p>
-
-<div class="btn"
-onclick="pagar('Plan Desarrollador',210)">
-Obtener
-</div>
-
-</div>
-
 
 </main>
-
-
 <script src="app/planes.js"></script>
 
 </body>
