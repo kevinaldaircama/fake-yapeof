@@ -22,8 +22,8 @@ else
 fi
 
 SCRIPT="/usr/local/bin/yape"
-REPO="https://github.com/kevinaldaircama/yape"
-RAW="https://raw.githubusercontent.com/kevinaldaircama/yape/main/setup.sh"
+REPO="https://github.com/kevinaldaircama/fake-yapeof"
+RAW="https://raw.githubusercontent.com/kevinaldaircama/fake-yapeof/main/setup.sh"
 
 # ===== COLORES =====
 verde="\e[32m"
