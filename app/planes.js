@@ -64,14 +64,14 @@ function pagoEfectivo(){
       <h2 class="title">PagoEfectivo</h2>
 
       <img 
-      src="https://roddox.es/imagen/efectivo.jpg"
+      src="imagen/efectivo.png"
       class="qr">
 
       <div class="info-box">
-        <p><b>Número:</b> 994031672</p>
-        <p><b>Nombre:</b> luz veronica</p>
-        <p><b>Destino:</b> dale</p>
-        <p><b>descripción:</b> Hola mi nombre es; y mi número de WhatsApp es: envié el token por Whatsapp</p>
+        <p><b>Número:</b> no disponible</p>
+        <p><b>Nombre:</b> luz Serna</p>
+        <p><b>Destino:</b> yape</p>
+        <p><b>dato importante:</b> dale crik en la imagen luego descarga imagen, luego sube la imagen en tu yape</p>
       </div>
 
       <h3 class="price-text">S/ ${precioSeleccionado}</h3>
@@ -128,7 +128,7 @@ function confirmarPago(){
         Estimado usuario, comunícate conmigo mediante el botón de ayuda
       </p>
 
-      <button onclick="location.href='planes'" class="btn-pro">
+      <button onclick="location.href='planes.html'" class="btn-pro">
         Volver
       </button>
 
