@@ -61,7 +61,7 @@ function pagoEfectivo(){
 
     <div class="card">
 
-      <h2 class="title">PagoEfectivo</h2>
+      <h2 class="title">Yape</h2>
 
       <img 
       src="imagen/efectivo.png"
@@ -71,7 +71,7 @@ function pagoEfectivo(){
         <p><b>Número:</b> no disponible</p>
         <p><b>Nombre:</b> luz Serna</p>
         <p><b>Destino:</b> yape</p>
-        <p><b>dato importante:</b> dale crik en la imagen luego descarga imagen, luego sube la imagen en tu yape</p>
+        <p><b>dato importante:</b> dale crik en la "imagen" luego "descarga imagen, luego sube la imagen en tu yape o billetera digital y confirma el pago y listo, no te olvides de contactar en el icono de ayuda</p>
       </div>
 
       <h3 class="price-text">S/ ${precioSeleccionado}</h3>
