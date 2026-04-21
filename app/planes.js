@@ -128,7 +128,7 @@ function confirmarPago(){
         Estimado usuario, comunícate conmigo mediante el botón de ayuda
       </p>
 
-      <button onclick="location.href='planes.html'" class="btn-pro">
+      <button onclick="location.href='planes'" class="btn-pro">
         Volver
       </button>
 
