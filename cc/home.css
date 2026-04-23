@@ -27,11 +27,38 @@ body {
 .header {
   padding: 0.8rem 1rem;
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  gap: 0.6rem;
+  color: white;
+}
+/* BUSCADOR estilo Yape */
+.search {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.2); /* translúcido */
+  border-radius: 25px;
+  padding: 0.3rem 0.8rem;
+  gap: 0.4rem;
+  backdrop-filter: blur(5px); /* efecto glass 🔥 */
+}
+
+.search i {
   color: white;
 }
 
+.search input {
+  border: none;
+  outline: none;
+  width: 100%;
+  font-size: 0.85rem;
+  background: transparent;
+  color: white;
+}
+
+.search input::placeholder {
+  color: rgba(255,255,255,0.7);
+}
 .username a {
   text-decoration: none;
   color: white;
@@ -102,7 +129,18 @@ body {
   display: block;
   font-weight: 500;
 }
+.icon-btn a {
+  text-decoration: none;
+  color: white;
+}
 
+.icon-btn a:visited {
+  color: white;
+}
+
+.icon-btn span {
+  color: white;
+}
 /* ================= CAROUSEL MÁS PEQUEÑO ================= */
 .carousel {
   width: 100%;
