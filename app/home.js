@@ -30,10 +30,7 @@ onAuthStateChanged(auth, async (user) => {
     if (docSnap.exists()) {
 
       const datos = docSnap.data();
-
-      userLink.innerHTML =
-        `<i class="fas fa-user"></i> Hola, ${datos.nombre}`;
-
+      
       saldoValor.textContent =
         `S/ ${datos.monto}`;
 
