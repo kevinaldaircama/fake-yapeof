@@ -243,3 +243,54 @@ header{
 @keyframes float{
   50%{ transform:translateY(-6px); }
 }
+
+/* 🔥 PRECIOS CON DESCUENTO */
+.old{
+  text-decoration: line-through;
+  color: #999;
+  font-size: 14px;
+  display:block;
+}
+
+.new{
+  color: #00c853;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.sale{
+  display:inline-block;
+  background:#ff3d00;
+  color:white;
+  padding:4px 8px;
+  border-radius:8px;
+  font-size:12px;
+  margin-top:5px;
+}
+
+/* 🔥 PLAN DESTACADO MEJORADO */
+.plan.destacado{
+  border:2px solid #ff9800;
+  transform:scale(1.05);
+}
+
+/* 🔥 HOVER MÁS SUAVE */
+.plan{
+  transition: all .35s ease;
+}
+
+/* 🔥 BOTONES MÁS PRO */
+.btn{
+  letter-spacing:.5px;
+  font-size:15px;
+}
+
+/* 🔥 SOMBRA PREMIUM */
+.plan.premium{
+  background:linear-gradient(135deg,#1f1f1f,#2c2c2c);
+  color:white;
+}
+
+.plan.premium .details i{
+  color:#ff9800;
+}
