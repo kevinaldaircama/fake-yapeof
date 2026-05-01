@@ -20,7 +20,54 @@
 </head>
 
 <body>
+<div id="appBanner" style="
+position: fixed;
+bottom: 15px;
+left: 50%;
+transform: translateX(-50%);
+width: 90%;
+max-width: 400px;
+background: #ffffff;
+border-radius: 12px;
+box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+padding: 12px;
+display: flex;
+align-items: center;
+gap: 10px;
+font-family: sans-serif;
+z-index: 9999;
+">
 
+    <!-- Icono -->
+    <img src="imagen/splash_icon_xxxhdpi.png" style="width:50px;height:50px;border-radius:10px;">
+
+    <!-- Texto -->
+    <div style="flex:1;">
+        <div style="font-weight:bold;font-size:14px;">Gootani App</div>
+        <div style="font-size:12px;color:#666;">Ábrela o instálala gratis</div>
+    </div>
+
+    <!-- Botón -->
+    <button onclick="abrirApp()" style="
+        background:#28a745;
+        color:white;
+        border:none;
+        padding:8px 12px;
+        border-radius:8px;
+        cursor:pointer;
+        font-weight:bold;
+    ">
+        ABRIR
+    </button>
+
+    <!-- Cerrar -->
+    <span onclick="cerrarBanner()" style="
+        cursor:pointer;
+        font-size:18px;
+        color:#999;
+        margin-left:5px;
+    ">×</span>
+  </div>
 <div class="header">
   <div class="header-top">
     <span onclick="volver()"><i class="fa-solid fa-arrow-left"></i></span>
@@ -57,7 +104,41 @@
 <div id="modal">
   <div id="modal-content"></div>
 </div>
+<script>
+function abrirApp() {
+    var deepLink = "ac24://open4002273-a0b7x2";
+    var urlDescarga = "https://www.appcreator24.com/app3736946-15j7ny";
 
+    var timeout;
+
+    // Intentar abrir app
+    window.location.href = deepLink;
+
+    // Si falla, ir a descarga
+    timeout = setTimeout(function () {
+        window.location.href = urlDescarga;
+    }, 2000);
+
+    // Si la app abre, cancelar redirección
+    document.addEventListener("visibilitychange", function () {
+        if (document.hidden) {
+            clearTimeout(timeout);
+        }
+    });
+}
+
+function cerrarBanner() {
+    document.getElementById("appBanner").style.display = "none";
+    localStorage.setItem("bannerCerrado", "true");
+}
+
+// No mostrar si ya lo cerró
+if (localStorage.getItem("bannerCerrado") === "true") {
+    document.addEventListener("DOMContentLoaded", function(){
+        document.getElementById("appBanner").style.display = "none";
+    });
+}
+</script>
 <script src="app/firebase-config.js"></script>
 <script src="app/inicio.js"></script>
 
