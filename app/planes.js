@@ -33,8 +33,26 @@ function semanaSanta(year) {
 function obtenerEventos() {
   const year = new Date().getFullYear();
 
-  const diaMadre = new Date(year, 4, 1 + (7 - new Date(year,4,1).getDay()) + 7);
-  const diaPadre = new Date(year, 5, 1 + (7 - new Date(year,5,1).getDay()) + 14);
+  const primerDiaMayo = new Date(year, 4, 1);
+
+const primerDomingo =
+  primerDiaMayo.getDay() === 0
+    ? 1
+    : 8 - primerDiaMayo.getDay();
+
+const segundoDomingo = primerDomingo + 7;
+
+const diaMadre = new Date(year, 4, segundoDomingo);
+  const primerDiaJunio = new Date(year, 5, 1);
+
+const primerDomingoJunio =
+  primerDiaJunio.getDay() === 0
+    ? 1
+    : 8 - primerDiaJunio.getDay();
+
+const tercerDomingo = primerDomingoJunio + 14;
+
+const diaPadre = new Date(year, 5, tercerDomingo);
 
   return [
     { nombre: "Feliz día del san Valentín 💖", fecha: new Date(year, 1, 14) },
