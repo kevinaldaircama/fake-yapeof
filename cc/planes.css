@@ -294,3 +294,58 @@ header{
 .plan.premium .details i{
   color:#ff9800;
 }
+/* 🔥 EFECTO GLASS */
+.plan{
+  backdrop-filter: blur(10px);
+  background: rgba(255,255,255,0.9);
+}
+
+/* 🔥 BOTONES MÁS MODERNOS */
+.btn{
+  background: linear-gradient(135deg,#6a11cb,#2575fc);
+  border:none;
+}
+
+.btn:hover{
+  transform:scale(1.07);
+  box-shadow:0 10px 25px rgba(0,0,0,.3);
+}
+
+/* 🔥 TEXTO MÁS PREMIUM */
+.price{
+  font-size:30px;
+  color:#222;
+}
+
+/* 🔥 PLAN PREMIUM MÁS LLAMATIVO */
+.plan.premium{
+  background:linear-gradient(135deg,#000,#2b2b2b);
+  border:1px solid #ff9800;
+}
+
+/* 🔥 INPUT MÁS PRO */
+.input-pro{
+  background:#2a2a2a;
+  color:white;
+  border:1px solid #555;
+}
+
+.input-pro::placeholder{
+  color:#aaa;
+}
+
+/* 🔥 CARD MÁS ELEGANTE */
+.card{
+  box-shadow:0 15px 40px rgba(0,0,0,.3);
+}
+
+/* 🔥 BOTÓN AYUDA MÁS LLAMATIVO */
+.help-btn{
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse{
+  0%{ transform:scale(1); }
+  50%{ transform:scale(1.1); }
+  100%{ transform:scale(1); }
+  }
