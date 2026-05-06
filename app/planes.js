@@ -122,9 +122,21 @@ function mostrarPromo(){
         border-radius:20px;
         text-align:center;
         max-width:320px;
+        box-shadow:0 10px 40px rgba(0,0,0,.4);
       ">
         <h2>${evento.nombre}</h2>
-        <p>🎉 aprovecha este 10% de descuento hasta terminar la promoción</p>
+        <p>🎉 ten un 10% de descuento hasta terminar la hora.</p>
+
+        <div id="contador" style="
+          font-size:22px;
+          font-weight:bold;
+          margin:10px 0;
+          background:rgba(0,0,0,.2);
+          padding:10px;
+          border-radius:10px;
+        ">
+          00:00:00
+        </div>
 
         <button onclick="this.closest('div').parentElement.remove()"
         style="
@@ -143,6 +155,39 @@ function mostrarPromo(){
   `;
 
   document.body.appendChild(modal);
+
+  iniciarContador();
+}
+
+function iniciarContador(){
+  const contador = document.getElementById("contador");
+
+  function actualizar(){
+    const ahora = new Date();
+
+    // Próxima medianoche
+    const fin = new Date();
+    fin.setHours(24,0,0,0);
+
+    const diff = fin - ahora;
+
+    if(diff <= 0){
+      contador.innerText = "00:00:00";
+      return;
+    }
+
+    const h = Math.floor(diff / 1000 / 60 / 60);
+    const m = Math.floor((diff / 1000 / 60) % 60);
+    const s = Math.floor((diff / 1000) % 60);
+
+    contador.innerText =
+      String(h).padStart(2,'0') + ":" +
+      String(m).padStart(2,'0') + ":" +
+      String(s).padStart(2,'0');
+  }
+
+  actualizar();
+  setInterval(actualizar,1000);
 }
 /* =========================
    🚀 INICIO
@@ -268,20 +313,24 @@ function formularioPago(){
    ✅ FINAL
 ========================= */
 function confirmarPago(){
-  document.body.innerHTML = `
-  <div class="center-screen success-bg">
+  const nombre = document.getElementById("nombre").value;
+  const hora = document.getElementById("hora").value;
+  const id = document.getElementById("id").value;
 
-    <div class="card">
+  const numero = "51994031672"; // TU WHATSAPP (código Perú)
 
-      <h2 class="title">Solicitud enviada</h2>
-      <p class="subtitle">Contáctame por ayuda</p>
+  const mensaje = `
+📥 *Nueva solicitud pendiente*
 
-      <button onclick="location.href='planes'" class="btn-pro">
-        Volver
-      </button>
+👤 Nombre: ${nombre}
+⏰ Hora: ${hora}
+🧾 ID: ${id}
 
-    </div>
-
-  </div>
+📦 Plan: ${planSeleccionado}
+💰 Monto: S/ ${precioSeleccionado}
   `;
+
+  const url = "https://wa.me/" + numero + "?text=" + encodeURIComponent(mensaje);
+
+  window.open(url, "_blank");
 }
