@@ -220,14 +220,21 @@ window.addEventListener("load", () => {
 /* =========================
    💳 LÓGICA DE PAGO
 ========================= */
+/* =========================
+   💳 LÓGICA DE PAGO
+========================= */
 let planSeleccionado = "";
 let precioSeleccionado = 0;
 
 function pagar(plan, precio){
+
   planSeleccionado = plan;
 
   const precioFinal = aplicarDescuento(precio);
   precioSeleccionado = precioFinal;
+
+  document.getElementById("planNombre").innerText = planSeleccionado;
+  document.getElementById("planPrecio").innerText = precioSeleccionado;
 
   document.getElementById("modalPago").style.display = "flex";
 }
@@ -239,116 +246,41 @@ function cerrarModal(){
 /* =========================
    💳 MERCADO PAGO
 ========================= */
-function pagarMP(){
-  cerrarModal();
-
-  document.body.innerHTML = `
-  <div class="center-screen mp-bg">
-
-    <div class="card">
-      <i class="fa-solid fa-credit-card icon-big"></i>
-
-      <h1 class="title">Mercado Pago</h1>
-      <p class="subtitle">Pago seguro</p>
-
-      <p><b>${planSeleccionado}</b></p>
-      <p class="price-text">S/ ${precioSeleccionado}</p>
-
-      <p><b>Atento:</b> después de pagar escríbeme por WhatsApp o ayuda</p>
-
-      <button onclick="irMP()" class="btn-pro btn-mp">
-        Ir a pagar
-      </button>
-    </div>
-
-  </div>
-  `;
-}
-
 function irMP(){
-  window.location.href = "https://link.mercadopago.com.pe/kevintechtutorials";
+  window.open(
+    "https://link.mercadopago.com.pe/kevintechtutorials",
+    "_blank"
+  );
 }
-
-/* =========================
-   💵 PAGO EFECTIVO
-========================= */
-function pagoEfectivo(){
-  cerrarModal();
-
-  document.body.innerHTML = `
-  <div class="center-screen">
-
-    <div class="card">
-
-      <h2 class="title">Yape</h2>
-
-      <img src="imagen/efectivo.png" class="qr">
-
-      <div class="info-box">
-        <p><b>Número:</b> 994031672</p>
-        <p><b>Nombre:</b> luz Serna</p>
-        <p><b>Destino:</b> yape/dale</p>
-      </div>
-
-      <h3 class="price-text">S/ ${precioSeleccionado}</h3>
-
-      <button onclick="formularioPago()" class="btn-pro btn-success">
-        Ya pagué
-      </button>
-
-    </div>
-
-  </div>
-  `;
-}
-
-/* =========================
-   📝 FORMULARIO
-========================= */
-function formularioPago(){
-  document.body.innerHTML = `
-  <div class="center-screen dark-bg">
-
-    <div class="card card-dark">
-
-      <h2 class="title">Confirmar Pago</h2>
-
-      <input id="nombre" class="input-pro" placeholder="Nombre del pago">
-      <input id="hora" class="input-pro" placeholder="Hora del pago">
-      <input id="id" class="input-pro" placeholder="ID operación">
-
-      <button onclick="confirmarPago()" class="btn-pro btn-success">
-        Confirmar pago
-      </button>
-
-    </div>
-
-  </div>
-  `;
-}
-
-/* =========================
-   ✅ FINAL
-========================= */
 function confirmarPago(){
-  const nombre = document.getElementById("nombre").value;
-  const hora = document.getElementById("hora").value;
-  const id = document.getElementById("id").value;
 
-  const numero = "51994031672"; // TU WHATSAPP (código Perú)
+  const nombre = document.getElementById("nombre").value;
+  const correo = document.getElementById("correo").value;
+  const idPago = document.getElementById("idPago").value;
+
+  if(!nombre || !correo || !idPago){
+    alert("Completa todos los campos");
+    return;
+  }
+
+  const numero = "51994031672";
 
   const mensaje = `
-📥 *Nueva solicitud pendiente*
+📥 *Nuevo pago recibido*
 
 👤 Nombre: ${nombre}
-⏰ Hora: ${hora}
-🧾 ID: ${id}
+📧 Correo: ${correo}
+🧾 ID Pago: ${idPago}
 
 📦 Plan: ${planSeleccionado}
 💰 Monto: S/ ${precioSeleccionado}
   `;
 
-  const url = "https://wa.me/" + numero + "?text=" + encodeURIComponent(mensaje);
+  const url =
+    "https://wa.me/" +
+    numero +
+    "?text=" +
+    encodeURIComponent(mensaje);
 
   window.open(url, "_blank");
 }
