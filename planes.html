@@ -20,14 +20,38 @@
 <div id="modalPago">
   <div class="modal-box">
 
-    <h2>Elegir método de pago</h2>
+    <h2>Confirmar compra</h2>
 
-    <div class="modal-buttons">
-      <button onclick="pagarMP()" class="btn">💳 Mercado Pago</button>
-      <button onclick="pagoEfectivo()" class="btn btn-success">💵 Yape/dale</button>
+    <div class="info-plan">
+      <p><b>Plan:</b> <span id="planNombre"></span></p>
+      <p><b>Monto:</b> S/ <span id="planPrecio"></span></p>
     </div>
 
-    <button onclick="cerrarModal()" class="close">Cancelar</button>
+    <p class="txt-help">
+      ⚠️ Primero realiza el pago y luego completa el formulario.
+    </p>
+
+    <button onclick="irMP()" class="btn btn-mp">
+      💳 Pagar con Mercado Pago
+    </button>
+
+    <div class="formulario-pago">
+
+      <input type="text" id="nombre" placeholder="Nombre completo">
+
+      <input type="email" id="correo" placeholder="Correo electrónico">
+
+      <input type="text" id="idPago" placeholder="ID del pago">
+
+      <button onclick="confirmarPago()" class="btn btn-success">
+        Confirmar pago
+      </button>
+
+    </div>
+
+    <button onclick="cerrarModal()" class="close">
+      Cancelar
+    </button>
 
   </div>
 </div>
