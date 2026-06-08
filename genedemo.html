@@ -228,8 +228,7 @@ button:hover{
     <div class="mensaje" id="mensaje"></div>
 
 </div>
-
-<script>
+    <script>
 
 let tiempoRestante = 120;
 let timerInterval;
@@ -243,6 +242,36 @@ function cerrarWelcome(){
     document.getElementById("welcomeModal").classList.add("hidden");
 }
 
+// =====================
+// LIMITE 2 VECES AL DIA
+// =====================
+function obtenerDatosDiarios(){
+
+    const hoy = new Date().toLocaleDateString();
+
+    let datos = JSON.parse(
+        localStorage.getItem("limiteYape")
+    );
+
+    if(!datos || datos.fecha !== hoy){
+
+        datos = {
+            fecha: hoy,
+            usos: 0
+        };
+
+        localStorage.setItem(
+            "limiteYape",
+            JSON.stringify(datos)
+        );
+    }
+
+    return datos;
+}
+
+// =====================
+// TEMPORIZADOR
+// =====================
 function iniciarTemporizador(){
 
     clearInterval(timerInterval);
@@ -273,6 +302,9 @@ function iniciarTemporizador(){
     },1000);
 }
 
+// =====================
+// BLOQUEAR
+// =====================
 function bloquearFormulario(){
 
     document
@@ -290,6 +322,9 @@ function bloquearFormulario(){
 
 }
 
+// =====================
+// DESBLOQUEAR
+// =====================
 function desbloquearFormulario(){
 
     document
@@ -299,14 +334,23 @@ function desbloquearFormulario(){
     });
 
 }
+
+// =====================
+// VER ANUNCIO
+// =====================
 function verAnuncio(){
 
-    const boton = document.querySelector("#timeModal button");
+    const boton =
+        document.querySelector("#timeModal button");
 
     boton.disabled = true;
     boton.textContent = "Abriendo anuncio...";
 
-    // Espera 10 segundos antes de dar tiempo extra
+    window.open(
+        "https://pilesteroidprogramming.com/c2gyxry815?key=7a9667504a9e75aa7672fb2ca7702d88",
+        "_blank"
+    );
+
     setTimeout(() => {
 
         tiempoRestante = 120;
@@ -323,31 +367,48 @@ function verAnuncio(){
         boton.textContent =
             "Ver anuncio y obtener 2 minutos más";
 
-        alert("Se agregaron 2 minutos adicionales.");
+        alert(
+            "Se agregaron 2 minutos adicionales."
+        );
 
-    }, 10000);
+    },10000);
 
 }
+
+// =====================
+// GENERAR YAPE
+// =====================
 function generarYape(){
 
     if(tiempoRestante <= 0){
         return;
     }
 
+    const datos = obtenerDatosDiarios();
+
+    if(datos.usos >= 2){
+
+        alert(
+            "Ya alcanzaste el límite de 2 generaciones por hoy."
+        );
+
+        return;
+    }
+
     const nombre =
-    document.getElementById("nombre")
-    .value.trim();
+        document.getElementById("nombre")
+        .value.trim();
 
     const telefono =
-    document.getElementById("telefono")
-    .value.trim();
+        document.getElementById("telefono")
+        .value.trim();
 
     const monto =
-    document.getElementById("monto")
-    .value.trim();
+        document.getElementById("monto")
+        .value.trim();
 
     const mensaje =
-    document.getElementById("mensaje");
+        document.getElementById("mensaje");
 
     if(!nombre || !telefono || !monto){
 
@@ -360,17 +421,24 @@ function generarYape(){
 
     mensaje.style.display = "block";
     mensaje.textContent =
-    "Procesando datos...";
+        "Procesando datos...";
 
     setTimeout(() => {
 
         mensaje.textContent =
-        "Generando información...";
+            "Generando información...";
 
         setTimeout(() => {
 
+            datos.usos++;
+
+            localStorage.setItem(
+                "limiteYape",
+                JSON.stringify(datos)
+            );
+
             const url =
-            `comprobante demo.html?nombre=${encodeURIComponent(nombre)}&telefono=${encodeURIComponent(telefono)}&monto=${encodeURIComponent(monto)}`;
+                `comprobante demo.html?nombre=${encodeURIComponent(nombre)}&telefono=${encodeURIComponent(telefono)}&monto=${encodeURIComponent(monto)}`;
 
             window.location.href = url;
 
@@ -382,6 +450,6 @@ function generarYape(){
 
 iniciarTemporizador();
 
-</script>
+        </script>
 </body>
 </html>
