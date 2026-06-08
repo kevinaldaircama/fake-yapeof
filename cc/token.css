@@ -1,190 +1,279 @@
 :root{
-  --primary:#6366f1;
-  --secondary:#ec4899;
-  --bg1:#22d3ee;
-  --bg2:#a78bfa;
-  --dark:#0f172a;
-  --error:#dc2626;
-  --success:#16a34a;
+  --primary:#7b2cbf;
+  --primary-dark:#5a189a;
+  --accent:#00d4aa;
+  --orange:#ff9f1c;
+  --white:#ffffff;
 }
 
 /* RESET */
+
 *{
+  margin:0;
+  padding:0;
   box-sizing:border-box;
-  font-family:system-ui,-apple-system,sans-serif;
+  font-family:'Poppins',sans-serif;
 }
 
 body{
-  margin:0;
   min-height:100vh;
-  background:linear-gradient(130deg,var(--bg1),var(--primary),var(--secondary),var(--bg2));
-  background-size:400% 400%;
-  animation:bgMove 18s ease infinite;
+
   display:flex;
   justify-content:center;
   align-items:center;
-  padding:20px;
-}
 
-/* FONDO ANIMADO */
-@keyframes bgMove{
-  0%{background-position:0% 50%}
-  50%{background-position:100% 50%}
-  100%{background-position:0% 50%}
+  padding:20px;
+
+  background:
+  radial-gradient(circle at top left,#a855f7 0%,transparent 30%),
+  radial-gradient(circle at bottom right,#4f46e5 0%,transparent 30%),
+  linear-gradient(
+    160deg,
+    #240046,
+    #5a189a,
+    #7b2cbf
+  );
+
+  overflow:hidden;
 }
 
 /* CARD */
+
 .card{
   width:100%;
   max-width:420px;
-  padding:36px;
-  border-radius:22px;
 
-  backdrop-filter:blur(14px);
-  background:rgba(255,255,255,0.85);
+  padding:35px 25px;
 
-  box-shadow:
-  0 25px 60px rgba(0,0,0,.25),
-  inset 0 1px 0 rgba(255,255,255,.6);
+  border-radius:28px;
 
   text-align:center;
-  animation:fadeIn .5s ease;
+
+  background:rgba(255,255,255,.08);
+
+  backdrop-filter:blur(20px);
+
+  border:1px solid rgba(255,255,255,.12);
+
+  box-shadow:
+  0 20px 50px rgba(0,0,0,.35);
+
+  animation:show .4s ease;
 }
 
-/* ANIMACION */
-@keyframes fadeIn{
-  from{
-    opacity:0;
-    transform:translateY(15px) scale(.98);
-  }
-  to{
-    opacity:1;
-    transform:translateY(0) scale(1);
-  }
+/* LOGO */
+
+.card::before{
+  content:"🔐";
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  width:75px;
+  height:75px;
+
+  margin:0 auto 15px;
+
+  font-size:34px;
+
+  border-radius:50%;
+
+  background:rgba(255,255,255,.08);
+
+  border:1px solid rgba(255,255,255,.12);
 }
 
 /* TITULOS */
+
 h1{
-  margin:0 0 6px;
-  font-size:24px;
+  color:white;
+  font-size:28px;
   font-weight:800;
-  color:var(--dark);
 }
 
 .subtitle{
-  font-size:13px;
-  color:#64748b;
-  margin-bottom:26px;
+  color:rgba(255,255,255,.75);
+  margin-top:6px;
+  margin-bottom:25px;
 }
 
 /* INPUT */
+
 input{
   width:100%;
-  padding:14px 16px;
-  border-radius:14px;
-  border:1px solid #e2e8f0;
+
+  padding:16px;
+
+  border:none;
+
+  border-radius:16px;
+
   outline:none;
-  font-size:14px;
-  transition:.25s;
+
+  color:white;
+
+  background:rgba(255,255,255,.08);
+
+  border:1px solid rgba(255,255,255,.12);
+
+  font-size:15px;
+}
+
+input::placeholder{
+  color:rgba(255,255,255,.55);
 }
 
 input:focus{
-  border-color:var(--primary);
-  box-shadow:0 0 0 4px rgba(99,102,241,.15);
+  border-color:#b388ff;
+
+  box-shadow:
+  0 0 0 4px rgba(179,136,255,.2);
 }
 
 /* BOTONES */
-button,.buy{
-  width:100%;
-  margin-top:14px;
-  padding:14px;
-  border:none;
-  border-radius:14px;
-  font-weight:700;
-  font-size:14px;
-  cursor:pointer;
-  transition:.25s;
-  letter-spacing:.3px;
-}
 
-/* BOTON PRINCIPAL */
-button{
-  background:linear-gradient(135deg,var(--primary),var(--secondary));
-  color:#fff;
-  box-shadow:0 10px 25px rgba(99,102,241,.35);
-}
-
-button:hover{
-  transform:translateY(-2px);
-  box-shadow:0 14px 35px rgba(99,102,241,.45);
-}
-
-button:active{
-  transform:scale(.98);
-}
-
-button:disabled{
-  opacity:.6;
-  cursor:not-allowed;
-  box-shadow:none;
-}
-
-/* BOTON COMPRA */
+button,
 .buy{
-  background:linear-gradient(135deg,#0ea5e9,#0284c7);
-  color:#fff;
+  width:100%;
+
+  position:relative;
+
+  overflow:hidden;
+
+  margin-top:14px;
+
+  padding:15px;
+
+  border:none;
+
+  border-radius:16px;
+
+  color:white;
+
+  font-size:15px;
+  font-weight:700;
+
   text-decoration:none;
+
   display:block;
-  box-shadow:0 10px 25px rgba(14,165,233,.35);
+
+  transition:.3s;
 }
 
+button::before,
+.buy::before{
+  content:"";
+
+  position:absolute;
+
+  top:0;
+  left:-120%;
+
+  width:60%;
+  height:100%;
+
+  background:
+  linear-gradient(
+    90deg,
+    transparent,
+    rgba(255,255,255,.25),
+    transparent
+  );
+
+  transition:.8s;
+}
+
+button:hover::before,
+.buy:hover::before{
+  left:130%;
+}
+
+button{
+  background:
+  linear-gradient(
+    135deg,
+    #00d4aa,
+    #00b894
+  );
+
+  box-shadow:
+  0 10px 25px rgba(0,212,170,.35);
+}
+
+.buy{
+  background:
+  linear-gradient(
+    135deg,
+    #ff9f1c,
+    #ff6b35
+  );
+
+  box-shadow:
+  0 10px 25px rgba(255,159,28,.35);
+}
+
+button:hover,
 .buy:hover{
-  transform:translateY(-2px);
-  box-shadow:0 14px 30px rgba(14,165,233,.45);
+  transform:translateY(-3px);
 }
 
 /* MENSAJES */
+
 .msg{
-  margin-top:18px;
+  margin-top:16px;
+  min-height:22px;
+
   font-size:14px;
   font-weight:600;
-  min-height:20px;
 }
 
 .msg.error{
-  color:var(--error);
+  color:#ff6b6b;
 }
 
 .msg.success{
-  color:var(--success);
+  color:#4ade80;
 }
 
-/* MARCA */
+/* FOOTER */
+
 .watermark{
-  margin-top:18px;
-  font-size:11px;
-  color:#94a3b8;
+  margin-top:22px;
+
+  color:rgba(255,255,255,.55);
+
+  font-size:12px;
 }
 
-/* PANTALLA MANTENIMIENTO */
+/* MANTENIMIENTO */
+
 #maintenanceScreen{
   position:fixed;
   inset:0;
-  background:linear-gradient(160deg,#020617,#020617,#0f172a);
-  color:#fff;
-  z-index:9999;
+
+  background:
+  linear-gradient(
+    135deg,
+    #0f172a,
+    #020617
+  );
+
+  color:white;
 
   display:flex;
   flex-direction:column;
   justify-content:center;
   align-items:center;
+
   text-align:center;
 
-  padding:20px;
+  z-index:9999;
 
   opacity:0;
   visibility:hidden;
-  transition:.35s;
+
+  transition:.3s;
 }
 
 #maintenanceScreen.active{
@@ -192,16 +281,38 @@ button:disabled{
   visibility:visible;
 }
 
+#maintenanceScreen h1{
+  font-size:30px;
+  margin-bottom:10px;
+}
+
+#maintenanceScreen p{
+  color:#cbd5e1;
+}
+
+/* ANIMACION */
+
+@keyframes show{
+  from{
+    opacity:0;
+    transform:translateY(20px) scale(.95);
+  }
+  to{
+    opacity:1;
+    transform:none;
+  }
+}
+
 /* RESPONSIVE */
-@media (max-width:480px){
+
+@media(max-width:480px){
 
   .card{
-    padding:28px;
-    border-radius:18px;
+    padding:28px 20px;
   }
 
   h1{
-    font-size:20px;
+    font-size:24px;
   }
 
 }
