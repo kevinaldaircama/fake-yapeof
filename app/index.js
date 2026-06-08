@@ -23,84 +23,17 @@ const timer = setInterval(() => {
 
     countdownEl.style.display = "none";
 
-    closeBtn.style.display = "block";
+    closeBtn.style.display = "flex";
 
   }
 
 }, 1000);
-
 
 closeBtn.addEventListener("click", () => {
 
   welcomeModal.style.display = "none";
 
 });
-
-
-
-/* FIREBASE v10 */
-
-import { initializeApp }
-from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-
-import {
-  getAuth,
-  GoogleAuthProvider,
-  signInWithPopup
-}
-from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-
-
-let app;
-let auth;
-
-
-/* INICIALIZAR CON firebase.json */
-
-const cfg = window.firebaseConfig;
-
-app = initializeApp(cfg);
-auth = getAuth(app);
-
-startApp();
-
-
-/* START */
-
-function startApp(){
-
-  const provider =
-    new GoogleAuthProvider();
-
-  document
-  .getElementById("googleLogin")
-  .addEventListener("click", async () => {
-
-    try {
-
-      const result =
-        await signInWithPopup(auth, provider);
-
-      const user = result.user;
-
-      alert(
-        "Bienvenido " +
-        (user.displayName || "")
-      );
-
-      location.href = "home";
-
-    }
-    catch (error) {
-
-      alert(error.message);
-
-    }
-
-  });
-
-}
-
 
 
 /* SLIDER */
@@ -112,7 +45,6 @@ const dots =
   document.querySelectorAll(".dot");
 
 let current = 0;
-
 
 function showSlide(index){
 
@@ -130,7 +62,6 @@ function showSlide(index){
 
 }
 
-
 function nextSlide(){
 
   current =
@@ -140,9 +71,7 @@ function nextSlide(){
 
 }
 
-
 setInterval(nextSlide, 3000);
-
 
 dots.forEach((dot, index) => {
 
