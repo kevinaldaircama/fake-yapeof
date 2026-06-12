@@ -4,111 +4,296 @@
 <meta charset="UTF-8">  
 <title>Admin Dashboard</title>  
 <meta name="viewport" content="width=device-width, initial-scale=1.0">  
-  
+  <link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#7B2C83">
+
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">  
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>  
   
 <style>  
-:root{  
-  --bg:#f4f6fb;  
-  --card:#ffffff;  
-  --text:#1f2937;  
-  --primary:#4e9af1;  
-}  
-body.dark{  
-  --bg:#0f172a;  
-  --card:#111827;  
-  --text:#e5e7eb;  
-}  
-*{box-sizing:border-box}  
-body{  
-  margin:0;  
-  font-family:Segoe UI,Arial;  
-  background:var(--bg);  
-  color:var(--text);  
-}  
-  
-.sidebar{  
-  width:260px;  
-  height:100vh;  
-  background:#020617;  
-  position:fixed;  
-  top:0;  
-  left:-260px;  
-  padding:20px;  
-  transition:.3s;  
-  z-index:1000;  
-}  
-.sidebar.active{left:0}  
-.sidebar h2{color:#fff;text-align:center}  
-.sidebar a{  
-  display:flex;  
-  align-items:center;  
-  gap:10px;  
-  padding:12px;  
-  margin:6px 0;  
-  color:#cbd5f5;  
-  text-decoration:none;  
-  border-radius:10px;  
-}  
-.sidebar a.active,  
-.sidebar a:hover{  
-  background:var(--primary);  
-  color:#fff;  
-}  
-  
-.overlay{  
-  position:fixed;  
-  inset:0;  
-  background:#00000088;  
-  display:none;  
-  z-index:900;  
-}  
-.overlay.show{display:block}  
-  
-.content{padding:20px}  
-.card{  
-  background:var(--card);  
-  padding:20px;  
-  border-radius:16px;  
-  margin-bottom:20px;  
-}  
-  
-input,button{  
-  width:100%;  
-  padding:10px;  
-  margin:6px 0;  
-  border-radius:8px;  
-  border:1px solid #ccc;  
-}  
-button{  
-  background:var(--primary);  
-  color:#fff;  
-  border:none;  
-  cursor:pointer;  
-}  
-  
-ul{list-style:none;padding:0}  
-li{  
-  background:#00000010;  
-  padding:10px;  
-  border-radius:10px;  
-  margin-bottom:8px;  
-}  
-  
-.statBox{  
-  display:flex;  
-  gap:10px;  
-  flex-wrap:wrap;  
-}  
-  
-.stat{  
-  flex:1;  
-  background:#00000010;  
-  padding:10px;  
-  border-radius:10px;  
-  text-align:center;  
-}  
+:root{
+  --bg:#0f172a;
+  --card:#111827;
+  --card2:#1e293b;
+  --text:#f8fafc;
+  --text2:#94a3b8;
+  --primary:#7c3aed;
+  --primary2:#9333ea;
+  --success:#22c55e;
+  --danger:#ef4444;
+  --border:rgba(255,255,255,.08);
+}
+
+body.dark{
+  --bg:#020617;
+  --card:#0f172a;
+  --card2:#111827;
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  font-family:'Segoe UI',sans-serif;
+  background:
+  radial-gradient(circle at top left,#7c3aed33,transparent 30%),
+  radial-gradient(circle at bottom right,#2563eb22,transparent 30%),
+  var(--bg);
+  color:var(--text);
+  min-height:100vh;
+}
+
+/* MENU */
+
+.sidebar{
+  width:280px;
+  height:100vh;
+  background:rgba(15,23,42,.95);
+  backdrop-filter:blur(20px);
+  border-right:1px solid var(--border);
+  position:fixed;
+  left:-280px;
+  top:0;
+  padding:25px;
+  transition:.35s ease;
+  z-index:1000;
+}
+
+.sidebar.active{
+  left:0;
+}
+
+.sidebar h2{
+  text-align:center;
+  margin-bottom:30px;
+  color:#fff;
+  font-size:28px;
+  letter-spacing:2px;
+}
+
+.sidebar a{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:14px;
+  margin:8px 0;
+  border-radius:14px;
+  color:var(--text2);
+  text-decoration:none;
+  transition:.25s;
+}
+
+.sidebar a:hover,
+.sidebar a.active{
+  background:linear-gradient(
+    135deg,
+    var(--primary),
+    var(--primary2)
+  );
+  color:white;
+  transform:translateX(6px);
+}
+
+/* BOTON MENU */
+
+#menuBtn{
+  position:fixed;
+  top:15px;
+  left:15px;
+  width:50px!important;
+  height:50px!important;
+  border:none;
+  border-radius:15px;
+  background:linear-gradient(
+  135deg,
+  var(--primary),
+  var(--primary2)
+  )!important;
+  box-shadow:0 10px 25px rgba(124,58,237,.4);
+  font-size:20px!important;
+}
+
+/* OVERLAY */
+
+.overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.6);
+  backdrop-filter:blur(4px);
+  display:none;
+}
+
+.overlay.show{
+  display:block;
+}
+
+/* CONTENT */
+
+.content{
+  padding:80px 20px 20px;
+  max-width:1400px;
+  margin:auto;
+}
+
+/* CARDS */
+
+.card{
+  background:rgba(17,24,39,.8);
+  backdrop-filter:blur(20px);
+  border:1px solid var(--border);
+  border-radius:24px;
+  padding:25px;
+  margin-bottom:20px;
+  box-shadow:
+  0 10px 40px rgba(0,0,0,.25);
+  animation:fadeUp .4s ease;
+}
+
+@keyframes fadeUp{
+  from{
+    opacity:0;
+    transform:translateY(20px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+.card h3{
+  margin-bottom:20px;
+  font-size:22px;
+}
+
+/* STATS */
+
+.statBox{
+  display:grid;
+  grid-template-columns:
+  repeat(auto-fit,minmax(180px,1fr));
+  gap:15px;
+  margin:20px 0;
+}
+
+.stat{
+  background:linear-gradient(
+  135deg,
+  rgba(124,58,237,.25),
+  rgba(59,130,246,.15)
+  );
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:18px;
+  padding:20px;
+  text-align:center;
+  font-size:18px;
+  font-weight:700;
+  transition:.3s;
+}
+
+.stat:hover{
+  transform:translateY(-5px);
+}
+
+/* INPUTS */
+
+input{
+  width:100%;
+  padding:14px;
+  margin:8px 0;
+  border-radius:14px;
+  border:1px solid var(--border);
+  background:var(--card2);
+  color:white;
+  outline:none;
+  transition:.3s;
+}
+
+input:focus{
+  border-color:var(--primary);
+  box-shadow:0 0 0 4px rgba(124,58,237,.25);
+}
+
+/* BOTONES */
+
+button{
+  width:100%;
+  padding:14px;
+  border:none;
+  border-radius:14px;
+  background:linear-gradient(
+  135deg,
+  var(--primary),
+  var(--primary2)
+  );
+  color:white;
+  font-weight:700;
+  cursor:pointer;
+  transition:.3s;
+}
+
+button:hover{
+  transform:translateY(-2px);
+  box-shadow:0 10px 25px rgba(124,58,237,.4);
+}
+
+/* LISTAS */
+
+ul{
+  list-style:none;
+}
+
+li{
+  background:var(--card2);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:14px;
+  margin-bottom:10px;
+  transition:.25s;
+}
+
+li:hover{
+  transform:translateX(5px);
+  border-color:var(--primary);
+}
+
+/* CHART */
+
+#statsChart{
+  margin-top:20px;
+  max-height:350px;
+}
+
+/* SCROLL */
+
+::-webkit-scrollbar{
+  width:8px;
+}
+
+::-webkit-scrollbar-thumb{
+  background:var(--primary);
+  border-radius:20px;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:768px){
+
+  .content{
+    padding:80px 12px;
+  }
+
+  .card{
+    padding:18px;
+  }
+
+  .stat{
+    font-size:15px;
+  }
+
+}
 </style>  
 </head>  
   
@@ -140,7 +325,7 @@ li{
   <a class="active" data-section="dashboard"><i class="fa fa-chart-bar"></i> Dashboard</a>  
   <a data-section="generator"><i class="fa fa-key"></i> Tokens</a>  
   <a data-section="search"><i class="fa fa-search"></i> Buscar</a>  
-  <a data-section="accounts"><i class="fa fa-users"></i> Cuentas</a>  
+  
   <a data-section="settings"><i class="fa fa-gear"></i> Configuración</a>  
 </div>  
   
@@ -166,18 +351,19 @@ li{
     <pre id="tokenOutput"></pre>  
   </div>  
   
-  <div id="search" class="card" style="display:none">  
-    <h3>Buscar</h3>  
-    <input id="searchBox" placeholder="Buscar...">  
-    <ul id="searchResults"></ul>  
-    <button id="exportCSV">Exportar CSV</button>  
-    <button id="deleteAll">Eliminar todo</button>  
-  </div>  
+  <div id="search" class="card" style="display:none">
+  <h3>Buscar Token</h3>
+
+  <input
+    id="searchBox"
+    placeholder="Buscar por nombre, correo o token..."
+  >
+
+  <div id="searchCount"></div>
+
+  <ul id="searchResults"></ul>
+</div>
   
-  <div id="accounts" class="card" style="display:none">  
-    <h3>Cuentas</h3>  
-    <ul id="accountsList"></ul>  
-  </div>  
   
   <div id="settings" class="card" style="display:none">  
     <h3>Configuración</h3>  
@@ -247,7 +433,7 @@ document.addEventListener("DOMContentLoaded", () => {
   `;  
   
   loadStats();  
-  loadAccounts();  
+  
   loadAdvancedStats();  
   
 });  
@@ -287,7 +473,7 @@ document.getElementById("generateBtn").addEventListener("click", async () => {
     "Token generado: " + token;  
   
   loadStats();  
-  loadAccounts();  
+  
   loadAdvancedStats();  
   
 });  
@@ -373,48 +559,6 @@ function drawChart(total, usados, activos){
     });  
   
 }  
-  
-  
-  
-async function loadAccounts(){  
-  
-  const snap =  
-    await get(  
-      child(ref(db), "tokens")  
-    );  
-  
-  const list =  
-    document.getElementById(  
-      "accountsList"  
-    );  
-  
-  list.innerHTML = "";  
-  
-  if(!snap.exists()) return;  
-  
-  Object.values(  
-    snap.val()  
-  ).forEach(i=>{  
-  
-    const li =  
-      document.createElement(  
-        "li"  
-      );  
-  
-    li.textContent =  
-      i.userName +  
-      " (" +  
-      i.userEmail +  
-      ")";  
-  
-    list.appendChild(li);  
-  
-  });  
-  
-}  
-  
-  
-  
 async function loadAdvancedStats(){  
   
   const snap =  
@@ -562,7 +706,7 @@ document
           );  
   
           loadStats();  
-          loadAccounts();  
+           
           loadAdvancedStats();  
   
         }catch{  
@@ -702,181 +846,126 @@ document
   
 });  
   
-const searchBox =  
-  document.getElementById("searchBox");  
+const searchBox =
+  document.getElementById("searchBox");
+
+const searchResults =
+  document.getElementById("searchResults");
+
+if(searchBox){
+
+  searchBox.addEventListener(
+    "input",
+    async ()=>{
+
+      const text =
+        searchBox.value.toLowerCase();
+
+      searchResults.innerHTML = "";
+
+      const snap =
+        await get(
+          child(ref(db),"tokens")
+        );
+
+      if(!snap.exists()) return;
+
+      const tokens = snap.val();
+
+      let encontrados = 0;
+
+      Object.entries(tokens).forEach(
+        ([token,data])=>{
+
+          const texto =
+            (token + data.userName + data.userEmail)
+            .toLowerCase();
+
+          if(texto.includes(text)){
+
+            encontrados++;
+
+            const li =
+              document.createElement("li");
+
+            li.innerHTML = `
+              <b>${data.userName}</b><br>
+              📧 ${data.userEmail}<br>
+              🔑 ${token}<br>
+
+              Estado:
+              ${data.used ? '🔴 Usado' : '🟢 Libre'}
+
+              <br><br>
+
+              <button onclick="copyToken('${token}')">
+                Copiar Token
+              </button>
+
+              ${
+                data.used
+                  ? `<button onclick="reuseToken('${token}')">
+                       ♻️ Reutilizar Token
+                     </button>`
+                  : ''
+              }
+            `;
+
+            searchResults.appendChild(li);
+
+          }
+
+        }
+      );
+
+      document.getElementById(
+        "searchCount"
+      ).innerHTML =
+        `Resultados: ${encontrados}`;
+
+    }
+  );
+
+}
+window.copyToken = async(token)=>{
+
+  await navigator.clipboard.writeText(
+    token
+  );
+
+  alert(
+    "Token copiado"
+  );
+
+};
+window.reuseToken = async(token)=>{
+
+  await set(
+    ref(db, "tokens/" + token + "/used"),
+    false
+  );
+
+  alert("✅ Token reactivado");
+
+  loadStats();
   
-const searchResults =  
-  document.getElementById("searchResults");  
-  
-  
-if(searchBox){  
-  
-searchBox.addEventListener(  
-  "input",  
-  async ()=>{  
-  
-    const text =  
-      searchBox.value  
-      .toLowerCase();  
-  
-    searchResults.innerHTML =  
-      "";  
-  
-    const snap =  
-      await get(  
-        child(  
-          ref(db),  
-          "tokens"  
-        )  
-      );  
-  
-    if(!snap.exists()) return;  
-  
-    Object.values(  
-      snap.val()  
-    ).forEach(t=>{  
-  
-      const str =  
-        (  
-          t.userName +  
-          t.userEmail +  
-          t.userPassword  
-        ).toLowerCase();  
-  
-      if(  
-        str.includes(text)  
-      ){  
-  
-        const li =  
-          document.createElement(  
-            "li"  
-          );  
-  
-        li.textContent =  
-          t.userName +  
-          " | " +  
-          t.userEmail +  
-          " | " +  
-          (t.used  
-            ? "Usado"  
-            : "Activo");  
-  
-        searchResults.appendChild(  
-          li  
-        );  
-  
-      }  
-  
-    });  
-  
-  }  
-);  
-  
-}  
-document  
-.getElementById("deleteAll")  
-.addEventListener(  
-  "click",  
-  async ()=>{  
-  
-    const ok =  
-      confirm(  
-        "¿Eliminar todos los tokens?"  
-      );  
-  
-    if(!ok) return;  
-  
-    await set(  
-      ref(db,"tokens"),  
-      null  
-    );  
-  
-    alert(  
-      "Todos eliminados"  
-    );  
-  
-    loadStats();  
-    loadAccounts();  
-    loadAdvancedStats();  
-  
-    document  
-    .getElementById(  
-      "searchResults"  
-    ).innerHTML = "";  
-  
-  }  
-);  
-document  
-.getElementById("exportCSV")  
-.addEventListener(  
-  "click",  
-  async ()=>{  
-  
-    const snap =  
-      await get(  
-        child(  
-          ref(db),  
-          "tokens"  
-        )  
-      );  
-  
-    if(!snap.exists()) return;  
-  
-    let csv =  
-      "Nombre,Email,Usado\n";  
-  
-    Object.values(  
-      snap.val()  
-    ).forEach(t=>{  
-  
-      csv +=  
-        t.userName + "," +  
-        t.userEmail + "," +  
-        t.used + "\n";  
-  
-    });  
-  
-    const blob =  
-      new Blob(  
-        [csv],  
-        {  
-          type:  
-          "text/csv"  
-        }  
-      );  
-  
-    const a =  
-      document.createElement(  
-        "a"  
-      );  
-  
-    a.href =  
-      URL.createObjectURL(  
-        blob  
-      );  
-  
-    a.download =  
-      "tokens.csv";  
-  
-    a.click();  
-  
-  }  
-);  
-window.toggleDark = ()=>{  
-  
-  document.body.classList.toggle(  
-    "dark"  
-  );  
-  
-  localStorage.setItem(  
-    "dark",  
-    document.body.classList.contains(  
-      "dark"  
-    )  
-  );  
-  
-};  
-  
+  loadAdvancedStats();
+
+};
+window.toggleDark = ()=>{
+
+  document.body.classList.toggle(
+    "dark"
+  );
+
+  localStorage.setItem(
+    "dark",
+    document.body.classList.contains(
+      "dark"
+    )
+  );
+
+};
 </script>  
   
 </body>  
