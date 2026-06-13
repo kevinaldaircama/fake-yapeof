@@ -179,7 +179,63 @@ body{
   margin-bottom:20px;
   font-size:22px;
 }
+.profileCard{
+  text-align:center;
+}
 
+.profileAvatar{
+  width:100px;
+  height:100px;
+  margin:auto;
+  border-radius:50%;
+  background:linear-gradient(
+    135deg,
+    #7c3aed,
+    #9333ea
+  );
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:40px;
+  margin-bottom:15px;
+}
+
+.profileGrid{
+  display:grid;
+  grid-template-columns:
+  repeat(auto-fit,minmax(150px,1fr));
+  gap:12px;
+  margin:20px 0;
+}
+
+.profileGrid div{
+  background:var(--card2);
+  padding:15px;
+  border-radius:14px;
+}
+
+.profileGrid span{
+  display:block;
+  color:var(--text2);
+  font-size:13px;
+  margin-bottom:5px;
+}
+
+.alertExpire{
+  background:#ef444422;
+  color:#ef4444;
+  padding:12px;
+  border-radius:12px;
+  margin:15px 0;
+}
+
+.alertOk{
+  background:#22c55e22;
+  color:#22c55e;
+  padding:12px;
+  border-radius:12px;
+  margin:15px 0;
+}
 /* STATS */
 
 .statBox{
@@ -306,11 +362,46 @@ li:hover{
   }
 
 }
+.expiredModal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.8);
+  display:none;
+  justify-content:center;
+  align-items:center;
+  z-index:99999;
+}
+
+.expiredBox{
+  width:90%;
+  max-width:400px;
+  background:var(--card);
+  padding:25px;
+  border-radius:20px;
+  text-align:center;
+}
 </style>  
 </head>  
   
 <body>  
-  
+  <div id="expiredModal" class="expiredModal">
+
+  <div class="expiredBox">
+
+    <h2>🔒 Acceso Vencido</h2>
+
+    <p>
+      Tu plan ha expirado.
+      Renueva para continuar.
+    </p>
+
+    <button onclick="location.href='planes.html'">
+      Renovar Acceso
+    </button>
+
+  </div>
+
+</div>
 <div class="overlay" id="overlay"></div>  
 <button id="menuBtn" style="  
   position:fixed;  
@@ -677,21 +768,117 @@ async function loadAdvancedStats(){
   }
 
   const admin = snap.val();
+const expireDate = new Date(admin.expire);
+const now = new Date();
+
+const diff =
+expireDate.getTime() - now.getTime();
+
+const days =
+Math.ceil(
+diff / (1000 * 60 * 60 * 24)
+);
+
+let estado = "";
+let boton = "";
+
+if(days < 0){
 
   document.getElementById(
-    "profileInfo"
-  ).innerHTML = `
+    "expiredModal"
+  ).style.display = "flex";
 
-    <p><b>Usuario:</b> ${admin.user}</p>
-    <p><b>Nombre:</b> ${admin.name}</p>
-    <p><b>Correo:</b> ${admin.email}</p>
-    <p><b>Teléfono:</b> ${admin.phone}</p>
-    <p><b>Rol:</b> ${admin.role}</p>
-    <p><b>Expira:</b> ${admin.expire}</p>
+  document.body.style.overflow = "hidden";
 
+  estado = `
+  <div class="alertExpire">
+    ❌ Plan vencido
+  </div>
   `;
+
+  boton = `
+  <button onclick="location.href='planes.html'">
+    🚀 Renovar Ahora
+  </button>
+  `;
+
+}else if(days <= 7){
+
+  estado = `
+  <div class="alertExpire">
+    ⚠️ Tu plan vence en ${days} día(s)
+  </div>
+  `;
+
+  boton = `
+  <button onclick="location.href='planes.html'">
+    🔄 Renovar Plan
+  </button>
+  `;
+
+}else{
+
+  estado = `
+  <div class="alertOk">
+    ✅ Quedan ${days} días
+  </div>
+  `;
+
+  boton = `
+  <button onclick="location.href='planes.html'">
+    🚀 Ampliar Plan
+  </button>
+  `;
+
 }
-  
+
+document.getElementById(
+  "profileInfo"
+).innerHTML = `
+
+<div class="profileCard">
+
+  <div class="profileAvatar">
+    👨‍💼
+  </div>
+
+  <h2>${admin.name}</h2>
+
+  <p>${admin.email}</p>
+
+  ${estado}
+
+  <div class="profileGrid">
+
+    <div>
+      <span>Usuario</span>
+      <strong>${admin.user}</strong>
+    </div>
+
+    <div>
+      <span>Rol</span>
+      <strong>${admin.role}</strong>
+    </div>
+
+    <div>
+      <span>Teléfono</span>
+      <strong>${admin.phone}</strong>
+    </div>
+
+    <div>
+      <span>Expira</span>
+      <strong>${admin.expire}</strong>
+    </div>
+
+  </div>
+
+  ${boton}
+
+</div>
+
+`;
+
+} // cierre de loadProfile()
   
 document  
 .getElementById("exportJSON")  
